@@ -1,7 +1,7 @@
 html,
 body {
   background-color: #212121;
-  color: white;
+  color: rgb(205, 205, 205);
 }
 
 body {
@@ -16,4 +16,12 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+  margin: 5px;
+  font-size: 18px;
+  padding: 5px 30px;
 }

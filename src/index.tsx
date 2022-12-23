@@ -1,14 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
 // import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
+    <button style={{ backgroundColor: "#8cb4ff" }}>blue</button>
+    <button style={{ backgroundColor: "#ff6d91" }}>pink</button>
+    <button style={{ backgroundColor: "#afa100" }}>yellow</button>
+    <button
+      style={{ color: "rgb(205, 205, 205)", backgroundColor: "transparent" }}
+    >
+      yellow
+    </button>
     <App />
   </React.StrictMode>
 );
