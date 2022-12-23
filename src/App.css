@@ -1,7 +1,10 @@
 .App {
+  align-items: center;
   display: flex;
-  justify-content: center;
-  margin-top: 5px;
+  /* justify-content: center; */
+  margin-top: 20px;
+  flex-direction: column;
+  gap: 20px;
 }
 
 #cy {
@@ -9,4 +12,8 @@
   width: 1600px;
   height: 600px;
   display: block;
+}
+
+.actions {
+  width: 1600px;
 }

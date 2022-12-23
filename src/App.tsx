@@ -1,6 +1,9 @@
 import "./App.css";
-import cytoscape, { CytoscapeOptions } from "cytoscape";
-import { useEffect } from "react";
+import cytoscape, { CytoscapeOptions, LayoutOptions } from "cytoscape";
+import { useEffect, useState } from "react";
+import dagre from "cytoscape-dagre";
+
+cytoscape.use(dagre);
 
 const nrOfNodes = 10;
 
@@ -31,16 +34,16 @@ const generateHierachicalEdges = (): any => {
   }));
 
   const f3 = f.concat(f2);
-  console.log(f3);
+  // console.log(f3);
   return f3;
 };
 
-const gridLayout: CytoscapeOptions["layout"] = {
+const gridLayout: LayoutOptions = {
   name: "grid",
   rows: 2,
 };
 
-const randomLayout: CytoscapeOptions["layout"] = {
+const randomLayout: LayoutOptions = {
   name: "random",
   fit: true, // whether to fit to viewport
   padding: 30, // fit padding
@@ -58,13 +61,26 @@ const randomLayout: CytoscapeOptions["layout"] = {
   }, // transform a given node position. Useful for changing flow direction in discrete layouts
 };
 
-const nullLayout: CytoscapeOptions["layout"] = {
+const nullLayout: LayoutOptions = {
   name: "null",
   ready: function () {}, // on layoutready
   stop: function () {}, // on layoutstop
 };
 
+// https://github.com/cytoscape/cytoscape.js-dagre
+const dagreLayout: LayoutOptions = {
+  name: "dagre",
+};
+
+// https://js.cytoscape.org/#layouts/concentric
+const concentricLayout: LayoutOptions = {
+  name: "concentric",
+};
+
 function App() {
+  const [cy, setCy] = useState<cytoscape.Core>();
+  const [layout, setLayout] = useState<LayoutOptions>(dagreLayout);
+
   const elements = [
     ...generateNodes(),
     // ...generateLineairEdges(),
@@ -72,8 +88,7 @@ function App() {
   ];
 
   useEffect(() => {
-    // const cy =
-    cytoscape({
+    const newCy = cytoscape({
       container: document.getElementById("cy"), // container to render in
       elements,
       style: [
@@ -99,13 +114,39 @@ function App() {
         },
       ],
 
-      layout: gridLayout,
+      layout,
     });
+    setCy(newCy);
   }, []);
+
+  const rotateLayout = (fromLayout: LayoutOptions): LayoutOptions => {
+    if (fromLayout.name === "dagre") {
+      return concentricLayout;
+    }
+    if (fromLayout.name === "concentric") {
+      return gridLayout;
+    }
+    return dagreLayout;
+  };
 
   return (
     <div className="App">
       <div id="cy"></div>
+      <div className="actions">
+        <button
+          className="primary"
+          onClick={() => {
+            if (cy) {
+              const newLayout = rotateLayout(layout);
+              const cWithLayout = cy.layout(newLayout);
+              cWithLayout.run();
+              setLayout(newLayout);
+            }
+          }}
+        >
+          change layout
+        </button>
+      </div>
     </div>
   );
 }

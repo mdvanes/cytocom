@@ -9,14 +9,14 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <button style={{ backgroundColor: "#8cb4ff" }}>blue</button>
+    {/* <button style={{ backgroundColor: "#8cb4ff" }}>blue</button>
     <button style={{ backgroundColor: "#ff6d91" }}>pink</button>
     <button style={{ backgroundColor: "#afa100" }}>yellow</button>
     <button
       style={{ color: "rgb(205, 205, 205)", backgroundColor: "transparent" }}
     >
-      yellow
-    </button>
+      other
+    </button> */}
     <App />
   </React.StrictMode>
 );

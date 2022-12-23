@@ -21,7 +21,24 @@ code {
 button {
   border: 0;
   cursor: pointer;
-  margin: 5px;
+  /* margin: 5px; */
   font-size: 18px;
   padding: 5px 30px;
+}
+
+.primary {
+  background-color: #ff6d91;
+}
+
+.secondary {
+  background-color: #8cb4ff;
+}
+
+.alert {
+  background-color: #afa100;
+}
+
+.other {
+  color: rgb(205, 205, 205);
+  background-color: transparent;
 }
