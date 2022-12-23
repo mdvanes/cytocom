@@ -33,7 +33,8 @@ export const gridLayout: LayoutOptions = {
 // https://github.com/cytoscape/cytoscape.js-dagre
 export const dagreLayout: LayoutOptions = {
   name: "dagre",
-  //   animate: true,
+  // @ts-expect-error
+  animate: true,
 };
 
 // https://js.cytoscape.org/#layouts/concentric
@@ -42,4 +43,9 @@ export const concentricLayout: LayoutOptions = {
   //   padding: 50,
   animate: true,
   spacingFactor: 2,
+};
+
+export const colaLayout: LayoutOptions = {
+  name: "cola",
+  //   animate: true,
 };
