@@ -1,18 +1,21 @@
 import { NodeDefinition } from "cytoscape";
-import { SelectionIndividualRecord } from "read-gedcom";
+import {
+  SelectionIndividualEvent,
+  SelectionIndividualRecord,
+} from "read-gedcom";
 
 const getRenderedName = (rec: SelectionIndividualRecord): string => {
-  console.log(
-    rec,
-    "| birth",
-    // @ts-expect-error
-    rec.getEventBirth().getDate().valueAsDate()[0].date.year.value,
-    rec.getEventBirth().getDate().value()[0],
-    "| death",
-    rec.getEventDeath().getDate().value()[0],
-    "| s",
-    rec.getSex().value()[0]
-  );
+  //   console.log(
+  //     rec,
+  //     "| birth",
+  //     // @ts-expect-error
+  //     rec.getEventBirth().getDate().valueAsDate()[0].date.year.value,
+  //     rec.getEventBirth().getDate().value()[0],
+  //     "| death",
+  //     rec.getEventDeath().getDate().value()[0],
+  //     "| s",
+  //     rec.getSex().value()[0]
+  //   );
   const names =
     rec.getName().getNickname().value()[0] ??
     rec.getName().getGivenName().value()[0] ??
@@ -35,19 +38,30 @@ const getColor = (s?: string): string | undefined => {
   return;
 };
 
+const getYear = (familyEvent: SelectionIndividualEvent): number => {
+  const birthValueAsDate = familyEvent.getDate().valueAsDate()[0];
+  if (birthValueAsDate && "date" in birthValueAsDate) {
+    return birthValueAsDate.date.year.value;
+  }
+  return 0;
+};
+
 export const mapRecordToNode = (
   record: SelectionIndividualRecord
 ): NodeDefinition => {
   const s = `${record.getSex().value()[0]}`;
-  console.log(record, record.pointer());
   const pointer = `${record.pointer()[0]}`;
-  console.log(pointer);
+
   return {
     data: {
       id: pointer,
       name: getRenderedName(record),
       s,
       color: getColor(s),
+      birthDateString: record.getEventBirth().getDate().value()[0],
+      birthYear: getYear(record.getEventBirth()),
+      deathDateString: record.getEventDeath().getDate().value()[0],
+      deathYear: getYear(record.getEventDeath()),
     },
   };
 };

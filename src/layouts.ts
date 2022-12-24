@@ -49,3 +49,16 @@ export const colaLayout: LayoutOptions = {
   name: "cola",
   //   animate: true,
 };
+
+export const rotateLayout = (fromLayout: LayoutOptions): LayoutOptions => {
+  if (fromLayout.name === "dagre") {
+    return concentricLayout;
+  }
+  if (fromLayout.name === "concentric") {
+    return gridLayout;
+  }
+  if (fromLayout.name === "grid") {
+    return colaLayout;
+  }
+  return dagreLayout;
+};

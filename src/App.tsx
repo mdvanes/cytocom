@@ -7,6 +7,7 @@ import {
   concentricLayout,
   dagreLayout,
   gridLayout,
+  rotateLayout,
 } from "./layouts";
 // @ts-expect-error
 import cola from "cytoscape-cola";
@@ -59,7 +60,7 @@ const App: FC = () => {
     const run = async () => {
       const fam = await loadGedcom();
       const elements = [...famToNodes(fam), ...famToEdges(fam)];
-      console.log(elements);
+      // console.log(elements);
 
       const newCy = cytoscape({
         container: document.getElementById("cy"), // container to render in
@@ -79,7 +80,7 @@ const App: FC = () => {
           {
             selector: "edge",
             style: {
-              width: 3,
+              width: 0.5,
               "line-color": "#afa100",
               "target-arrow-color": "#afa100",
               "target-arrow-shape": "triangle",
@@ -91,24 +92,18 @@ const App: FC = () => {
         layout,
       });
       setCy(newCy);
+      newCy.nodes().forEach((n) => {
+        n.on("click", (ev) => {
+          // console.log(ev, n, n.id, n.data);
+          const nodeData = n.data();
+          console.log(`Clicked on node for ${nodeData.name}`, nodeData);
+        });
+      });
     };
 
     run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const rotateLayout = (fromLayout: LayoutOptions): LayoutOptions => {
-    if (fromLayout.name === "dagre") {
-      return concentricLayout;
-    }
-    if (fromLayout.name === "concentric") {
-      return gridLayout;
-    }
-    if (fromLayout.name === "grid") {
-      return colaLayout;
-    }
-    return dagreLayout;
-  };
 
   return (
     <div className="App">
