@@ -2,6 +2,7 @@
   "name": "cytocom",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://mdvanes.github.io/cytocom",
   "dependencies": {
     "cytoscape": "^3.23.0",
     "cytoscape-cola": "^2.5.1",
