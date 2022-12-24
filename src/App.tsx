@@ -2,17 +2,13 @@ import cytoscape, { LayoutOptions } from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
 import "./App.css";
-import {
-  colaLayout,
-  concentricLayout,
-  dagreLayout,
-  gridLayout,
-  rotateLayout,
-} from "./layouts";
+import { dagreLayout, rotateLayout } from "./layouts";
 // @ts-expect-error
 import cola from "cytoscape-cola";
 import { loadGedcom } from "./loadGedcom";
 import { Family } from "./types";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
@@ -92,16 +88,32 @@ const App: FC = () => {
         layout,
       });
       setCy(newCy);
+
       newCy.nodes().forEach((n) => {
         n.on("click", (ev) => {
           // console.log(ev, n, n.id, n.data);
           const nodeData = n.data();
           console.log(`Clicked on node for ${nodeData.name}`, nodeData);
+
+          // var tippy = makeTippy(n, h('div', {}, $links));
+          // tippy(n.popperRef())
+          alert(`${nodeData.name}
+
+${nodeData.s === "M" ? "Male" : "Female"}          
+Born: ${nodeData.birthDateString}
+Death: ${nodeData.deathDateString}
+ID: ${nodeData.id}`);
+          // ${JSON.stringify(nodeData, null, 2)}`);
         });
       });
     };
 
     run();
+
+    tippy("#mybutton", {
+      content: "some tippy content",
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -121,6 +133,16 @@ const App: FC = () => {
           }}
         >
           change layout [{layout.name}]
+        </button>
+
+        <button
+          id="mybutton"
+          className="secondary"
+          onClick={(evt) => {
+            console.log("click");
+          }}
+        >
+          test tippy
         </button>
       </div>
     </div>
