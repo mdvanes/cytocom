@@ -9,16 +9,41 @@ import {
   gridLayout,
   colaLayout,
 } from "./layouts";
-import { readGedcom } from "read-gedcom";
+import { readGedcom, SelectionIndividualRecord } from "read-gedcom";
 // @ts-expect-error
 import cola from "cytoscape-cola";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
 
+const getRenderedName = (rec: SelectionIndividualRecord): string => {
+  console.log(
+    rec,
+    "| birth",
+    // @ts-expect-error
+    rec.getEventBirth().getDate().valueAsDate()[0].date.year.value,
+    rec.getEventBirth().getDate().value()[0],
+    "| death",
+    rec.getEventDeath().getDate().value()[0],
+    "| s",
+    rec.getSex().value()[0]
+  );
+  const names =
+    rec.getName().getNickname().value()[0] ??
+    rec.getName().getGivenName().value()[0] ??
+    rec.getName().value()[0] ??
+    "";
+  // TODO this is making the invalid assumption that a single name can't contain a space, e.g. Mette Marit is a counter example.
+  if (names.indexOf(" ") > -1) {
+    return names.split(" ")[0];
+  }
+  return names;
+};
+
 // https://docs.arbre.app/read-gedcom/pages/basic-examples.html
 const foo = async () => {
   const gedcom = await fetch("https://mon.arbre.app/gedcoms/royal92.ged")
+    // const gedcom = await fetch("/example.ged")
     .then((r) => r.arrayBuffer())
     .then(readGedcom);
 
@@ -28,15 +53,26 @@ const foo = async () => {
   // console.log(gedcom.getIndividualRecord().getName().value());
   const victoria = gedcom.getIndividualRecord().arraySelect()[0];
   const fam = victoria.getFamilyAsSpouse();
-  // console.log(victoria.getName().value());
+  // console.log(victoria.getName().getNickname().value());
   // console.log(fam.getHusband().getIndividualRecord().getName().value());
   // console.log(fam.getChild().getIndividualRecord().getName().value());
   const result = {
     parents: [
       {
-        name: victoria.getName().value(),
+        // name: victoria.getName().value(),
+        name: getRenderedName(victoria),
         // id: victoria.getRecordIdentificationNumber().value(),
         pointer: victoria.arraySelect()[0].pointer(),
+      },
+      {
+        // name: victoria.getName().value(),
+        name: getRenderedName(fam.getHusband().getIndividualRecord()),
+        // id: victoria.getRecordIdentificationNumber().value(),
+        pointer: fam
+          .getHusband()
+          .getIndividualRecord()
+          .arraySelect()[0]
+          .pointer(),
       },
     ],
     children: fam
@@ -45,8 +81,10 @@ const foo = async () => {
       .arraySelect()
       .map((child) => ({
         // id: child.arraySelect()[0].getReferenceNumber().value(),
-        name: child.getName().value(),
+        // name: child.getName().value(),
+        name: getRenderedName(child),
         pointer: child.arraySelect()[0].pointer(),
+        s: child.getSex().value()[0],
       })),
   };
   // console.log(JSON.stringify(result, null, 2));
@@ -57,10 +95,22 @@ const famToNodes = (fam: any) => {
   // console.log(fam);
   return [
     ...fam.parents.map((x: any) => {
-      return { data: { id: `${x.pointer[0]}${x.name[0]}` } };
+      return {
+        data: {
+          id: `${x.pointer[0]}`,
+          name: x.name,
+          color: x.s === "F" ? "#ff6d91" : "#8cb4ff",
+        },
+      };
     }),
     ...fam.children.map((x: any) => {
-      return { data: { id: `${x.pointer[0]}${x.name[0]}` } };
+      return {
+        data: {
+          id: `${x.pointer[0]}`,
+          name: x.name,
+          color: x.s === "F" ? "#ff6d91" : "#8cb4ff",
+        },
+      };
     }),
   ];
 };
@@ -68,14 +118,24 @@ const famToNodes = (fam: any) => {
 const famToEdges = (fam: any) => {
   // console.log(fam);
   const m = fam.parents[0];
-  return fam.children.map((x: any) => {
-    return {
-      data: {
-        id: `edge${x.pointer[0]}`,
-        source: `${m.pointer[0]}${m.name[0]}`,
-        target: `${x.pointer[0]}${x.name[0]}`,
+  const p = fam.parents[1];
+  return fam.children.flatMap((x: any) => {
+    return [
+      {
+        data: {
+          id: `${m.pointer[0]}-${x.pointer[0]}`,
+          source: `${m.pointer[0]}`,
+          target: `${x.pointer[0]}`,
+        },
       },
-    };
+      {
+        data: {
+          id: `${p.pointer[0]}-${x.pointer[0]}`,
+          source: `${p.pointer[0]}`,
+          target: `${x.pointer[0]}`,
+        },
+      },
+    ];
   });
 };
 
@@ -103,8 +163,9 @@ const App: FC = () => {
             selector: "node",
             style: {
               color: "white",
-              "background-color": "#4e4e4e",
-              label: "data(id)",
+              "background-color": "data(color)",
+              // "background-color": "#4e4e4e",
+              label: "data(name)",
             },
           },
 
@@ -112,8 +173,8 @@ const App: FC = () => {
             selector: "edge",
             style: {
               width: 3,
-              "line-color": "#ccc",
-              "target-arrow-color": "#ccc",
+              "line-color": "#afa100",
+              "target-arrow-color": "#afa100",
               "target-arrow-shape": "triangle",
               "curve-style": "bezier",
             },
