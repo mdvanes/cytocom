@@ -1,4 +1,9 @@
-import cytoscape, { LayoutOptions, NodeSingular } from "cytoscape";
+import cytoscape, {
+  CollectionReturnValue,
+  EdgeDefinition,
+  LayoutOptions,
+  NodeSingular,
+} from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
 import "./App.css";
@@ -11,6 +16,8 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { getMinMaxDate } from "./getMinMaxDate";
+import { useRange } from "./useRange";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
@@ -20,7 +27,7 @@ const famToNodes = (fam: Family) => {
   return [...fam.parents, ...fam.children];
 };
 
-const famToEdges = (fam: Family) => {
+const famToEdges = (fam: Family): EdgeDefinition[] => {
   // console.log(fam);
   const m = fam.parents[0];
   const p = fam.parents[1];
@@ -47,11 +54,17 @@ const famToEdges = (fam: Family) => {
 const App: FC = () => {
   const [cy, setCy] = useState<cytoscape.Core>();
   const [layout, setLayout] = useState<LayoutOptions>(dagreLayout);
-  const minDate = 1800;
-  const maxDate = 2022;
+  // const minDate = 1800;
+  // const maxDate = 2022;
   // const [from, setFrom] = useState(minDate);
   // const [to, setTo] = useState(maxDate);
-  const [range, setRange] = useState<number | number[]>([minDate, maxDate]);
+  const [minMaxDate, setMinMaxDate] = useState<[number, number]>([
+    -Infinity,
+    Infinity,
+  ]);
+  const { handleRangeChange, range, setRange } = useRange(cy);
+  // const [range, setRange] = useState<number | number[]>([-Infinity, Infinity]);
+  // const [removed, setRemoved] = useState<CollectionReturnValue>();
 
   // const elements = [
   //   ...generateNodes(),
@@ -63,7 +76,10 @@ const App: FC = () => {
     const run = async () => {
       const fam = await loadGedcom();
       const elements = [...famToNodes(fam), ...famToEdges(fam)];
-      // console.log(elements);
+
+      const minMaxDate = getMinMaxDate(elements);
+      setMinMaxDate(minMaxDate);
+      setRange(minMaxDate);
 
       const newCy = cytoscape({
         container: document.getElementById("cy"), // container to render in
@@ -146,6 +162,17 @@ ID: ${nodeData.id}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // const handleRangeChange = (val: number | number[]) => {
+  //   setRange(val);
+  //   if (removed) {
+  //     removed.restore();
+  //   }
+  //   if (typeof val === "object" && val[0] && cy) {
+  //     const result = cy.$(`[birthYear < ${val[0]}]`).remove();
+  //     setRemoved(result);
+  //   }
+  // };
+
   return (
     <div className="App">
       <div id="cy"></div>
@@ -172,50 +199,18 @@ ID: ${nodeData.id}`);
         >
           test tippy
         </button>
-        {/* <div>
-          from: {from}
-          <input
-            type="range"
-            min={minDate}
-            max={maxDate}
-            value={from}
-            onChange={(evt) => {
-              setFrom(evt.target.value as any);
-            }}
-          />
-        </div>
-        <div>
-          <input
-            type="range"
-            min={minDate}
-            max={maxDate}
-            value={to}
-            onChange={(evt) => {
-              setTo(evt.target.value as any);
-            }}
-          />
-          {to}
-          to
-        </div> */}
+
         <div style={{ width: 300 }}>
           <Slider
             range
             allowCross={false}
-            min={minDate}
-            max={maxDate}
-            defaultValue={[0, 3000]}
+            min={minMaxDate[0]}
+            max={minMaxDate[1]}
+            defaultValue={range}
             value={range}
-            onChange={(val) => {
-              setRange(val);
-              if (typeof val === "object" && val[0] && val[0] > 1800 && cy) {
-                const x = cy.$(`[birthYear > ${val[0]}]`);
-                // console.log(x);
-                cy.nodes().not(x).remove();
-                // Note: does not work: newCy.nodes().restore();
-              }
-            }}
+            onChange={handleRangeChange}
           />
-          {typeof range === "object" ? `${range[0]}-${range[1]}` : ""}
+          {typeof range === "object" ? `from ${range[0]} to ${range[1]}` : ""}
         </div>
       </div>
     </div>
