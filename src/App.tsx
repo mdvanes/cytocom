@@ -1,5 +1,4 @@
 import cytoscape, {
-  CollectionReturnValue,
   EdgeDefinition,
   LayoutOptions,
   NodeSingular,
@@ -10,13 +9,10 @@ import "./App.css";
 import { dagreLayout, rotateLayout } from "./layouts";
 // @ts-expect-error
 import cola from "cytoscape-cola";
-import { loadGedcom } from "./loadGedcom";
-import { Family } from "./types";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
-import { getMinMaxDate } from "./getMinMaxDate";
+import { loadGedcom } from "./loadGedcom";
+import { Family } from "./types";
 import { useRange } from "./useRange";
 
 cytoscape.use(cola);
@@ -54,32 +50,19 @@ const famToEdges = (fam: Family): EdgeDefinition[] => {
 const App: FC = () => {
   const [cy, setCy] = useState<cytoscape.Core>();
   const [layout, setLayout] = useState<LayoutOptions>(dagreLayout);
-  // const minDate = 1800;
-  // const maxDate = 2022;
-  // const [from, setFrom] = useState(minDate);
-  // const [to, setTo] = useState(maxDate);
-  const [minMaxDate, setMinMaxDate] = useState<[number, number]>([
-    -Infinity,
-    Infinity,
-  ]);
-  const { handleRangeChange, range, setRange } = useRange(cy);
-  // const [range, setRange] = useState<number | number[]>([-Infinity, Infinity]);
-  // const [removed, setRemoved] = useState<CollectionReturnValue>();
-
-  // const elements = [
-  //   ...generateNodes(),
-  //   // ...generateLineairEdges(),
-  //   ...generateHierachicalEdges(),
-  // ];
+  const { initMinMax, rangeSlider } = useRange(cy);
 
   useEffect(() => {
     const run = async () => {
       const fam = await loadGedcom();
       const elements = [...famToNodes(fam), ...famToEdges(fam)];
+      // const elements = [
+      //   ...generateNodes(),
+      //   // ...generateLineairEdges(),
+      //   ...generateHierachicalEdges(),
+      // ];
 
-      const minMaxDate = getMinMaxDate(elements);
-      setMinMaxDate(minMaxDate);
-      setRange(minMaxDate);
+      initMinMax(elements);
 
       const newCy = cytoscape({
         container: document.getElementById("cy"), // container to render in
@@ -162,17 +145,6 @@ ID: ${nodeData.id}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const handleRangeChange = (val: number | number[]) => {
-  //   setRange(val);
-  //   if (removed) {
-  //     removed.restore();
-  //   }
-  //   if (typeof val === "object" && val[0] && cy) {
-  //     const result = cy.$(`[birthYear < ${val[0]}]`).remove();
-  //     setRemoved(result);
-  //   }
-  // };
-
   return (
     <div className="App">
       <div id="cy"></div>
@@ -190,6 +162,7 @@ ID: ${nodeData.id}`);
         >
           change layout [{layout.name}]
         </button>
+
         <button
           id="mybutton"
           className="secondary"
@@ -200,18 +173,7 @@ ID: ${nodeData.id}`);
           test tippy
         </button>
 
-        <div style={{ width: 300 }}>
-          <Slider
-            range
-            allowCross={false}
-            min={minMaxDate[0]}
-            max={minMaxDate[1]}
-            defaultValue={range}
-            value={range}
-            onChange={handleRangeChange}
-          />
-          {typeof range === "object" ? `from ${range[0]} to ${range[1]}` : ""}
-        </div>
+        {rangeSlider}
       </div>
     </div>
   );
