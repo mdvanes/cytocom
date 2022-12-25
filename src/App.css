@@ -2,20 +2,21 @@
   align-items: center;
   display: flex;
   /* justify-content: center; */
-  margin-top: 20px;
+  /* margin-top: 20px; */
   flex-direction: column;
   gap: 20px;
 }
 
 #cy {
   background-color: #1b1b1b;
-  width: 1600px;
-  height: 600px;
+  width: 100vw;
+  height: calc(100vh - 80px);
   display: block;
 }
 
 .actions {
   display: flex;
   gap: 20px;
-  width: 1600px;
+  margin: 0 20px;
+  width: calc(100vw - 40px);
 }

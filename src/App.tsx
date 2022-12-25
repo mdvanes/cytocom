@@ -74,6 +74,11 @@ const App: FC = () => {
             selector: "node",
             style: {
               color: "white",
+              "border-color": (n: any) => {
+                return n.data("deathYear") ? "#757575" : "transparent";
+              },
+              "border-width": "2",
+              // border: "1px solid red",
               "background-color": "data(color)",
               // "background-color": "#4e4e4e",
               label: "data(name)",
