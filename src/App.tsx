@@ -1,4 +1,4 @@
-import cytoscape, { LayoutOptions } from "cytoscape";
+import cytoscape, { LayoutOptions, NodeSingular } from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
 import "./App.css";
@@ -74,10 +74,13 @@ const App: FC = () => {
             selector: "node",
             style: {
               color: "white",
-              "border-color": (n: any) => {
-                return n.data("deathYear") ? "#757575" : "transparent";
+              "border-color": (n: NodeSingular) => {
+                // return n.data("deathYear") ? "#757575" : "transparent";
+                return n.data("deathYear") ? "#fff" : "transparent";
               },
-              "border-width": "2",
+              "border-width": (n: NodeSingular) => {
+                return n.data("deathYear") ? "2" : "0";
+              },
               // border: "1px solid red",
               "background-color": "data(color)",
               // "background-color": "#4e4e4e",

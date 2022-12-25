@@ -5,7 +5,7 @@ import { mapRecordToNode } from "./mapRecordToNode";
 // https://docs.arbre.app/read-gedcom/pages/basic-examples.html
 export const loadGedcom = async (): Promise<Family> => {
   const gedcom = await fetch("https://mon.arbre.app/gedcoms/royal92.ged")
-    // const gedcom = await fetch("/example.ged")
+    // const gedcom = await fetch("/cytocom/example.ged")
     .then((r) => r.arrayBuffer())
     .then(readGedcom);
 
