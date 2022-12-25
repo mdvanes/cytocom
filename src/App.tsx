@@ -9,6 +9,8 @@ import { loadGedcom } from "./loadGedcom";
 import { Family } from "./types";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
@@ -45,6 +47,11 @@ const famToEdges = (fam: Family) => {
 const App: FC = () => {
   const [cy, setCy] = useState<cytoscape.Core>();
   const [layout, setLayout] = useState<LayoutOptions>(dagreLayout);
+  const minDate = 1800;
+  const maxDate = 2022;
+  // const [from, setFrom] = useState(minDate);
+  // const [to, setTo] = useState(maxDate);
+  const [range, setRange] = useState<number | number[]>([minDate, maxDate]);
 
   // const elements = [
   //   ...generateNodes(),
@@ -70,6 +77,9 @@ const App: FC = () => {
               "background-color": "data(color)",
               // "background-color": "#4e4e4e",
               label: "data(name)",
+              // NOTE: This works, but does not hide the edges. Also, how to call this after the graph is rendered?
+              // visibility: (n: any) =>
+              //   n.data("birthYear") < 1821 ? "hidden" : "visible",
             },
           },
 
@@ -87,6 +97,17 @@ const App: FC = () => {
 
         layout,
       });
+
+      // Testing a filter
+      // const x = newCy.nodes().filter((n) => n.data("birthYear") < 1821);
+      // console.log(newCy.nodes(), x);
+      // const x= newCy.$("[birthYear > 1820]");
+      // newCy.nodes().not(x).remove();
+      // Note: does not work: newCy.nodes().restore();
+      // Note: This works with restore, but does not restore edges
+      // x.remove();
+      // x.restore();
+
       setCy(newCy);
 
       newCy.nodes().forEach((n) => {
@@ -134,7 +155,6 @@ ID: ${nodeData.id}`);
         >
           change layout [{layout.name}]
         </button>
-
         <button
           id="mybutton"
           className="secondary"
@@ -144,6 +164,51 @@ ID: ${nodeData.id}`);
         >
           test tippy
         </button>
+        {/* <div>
+          from: {from}
+          <input
+            type="range"
+            min={minDate}
+            max={maxDate}
+            value={from}
+            onChange={(evt) => {
+              setFrom(evt.target.value as any);
+            }}
+          />
+        </div>
+        <div>
+          <input
+            type="range"
+            min={minDate}
+            max={maxDate}
+            value={to}
+            onChange={(evt) => {
+              setTo(evt.target.value as any);
+            }}
+          />
+          {to}
+          to
+        </div> */}
+        <div style={{ width: 300 }}>
+          <Slider
+            range
+            allowCross={false}
+            min={minDate}
+            max={maxDate}
+            defaultValue={[0, 3000]}
+            value={range}
+            onChange={(val) => {
+              setRange(val);
+              if (typeof val === "object" && val[0] && val[0] > 1800 && cy) {
+                const x = cy.$(`[birthYear > ${val[0]}]`);
+                // console.log(x);
+                cy.nodes().not(x).remove();
+                // Note: does not work: newCy.nodes().restore();
+              }
+            }}
+          />
+          {typeof range === "object" ? `${range[0]}-${range[1]}` : ""}
+        </div>
       </div>
     </div>
   );
