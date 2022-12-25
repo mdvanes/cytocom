@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/cytocom/static/css/main.7c06a581.css",
-    "main.js": "/cytocom/static/js/main.99ee36b9.js",
+    "main.css": "/cytocom/static/css/main.5dcf8931.css",
+    "main.js": "/cytocom/static/js/main.ba993290.js",
     "index.html": "/cytocom/index.html",
-    "main.7c06a581.css.map": "/cytocom/static/css/main.7c06a581.css.map",
-    "main.99ee36b9.js.map": "/cytocom/static/js/main.99ee36b9.js.map"
+    "main.5dcf8931.css.map": "/cytocom/static/css/main.5dcf8931.css.map",
+    "main.ba993290.js.map": "/cytocom/static/js/main.ba993290.js.map"
   },
   "entrypoints": [
-    "static/css/main.7c06a581.css",
-    "static/js/main.99ee36b9.js"
+    "static/css/main.5dcf8931.css",
+    "static/js/main.ba993290.js"
   ]
 }
