@@ -15,21 +15,37 @@ export const useRange = (cy: cytoscape.Core | undefined) => {
     Infinity,
   ]);
 
+  const initMinMax = (elements: (NodeDefinition | EdgeDefinition)[]) => {
+    const minMaxDate = getMinMaxDate(elements);
+    setMinMaxDate(minMaxDate);
+    setRange(minMaxDate);
+  };
+
   const handleRangeChange = (val: number | number[]) => {
     setRange(val);
     if (removed) {
       removed.restore();
     }
     if (typeof val === "object" && val[0] && cy) {
-      const result = cy.$(`[birthYear < ${val[0]}]`).remove();
+      // const result = cy.$(`[birthYear < ${val[0]}]`).remove();
+      const result = cy
+        .filter((elem) => {
+          if (!elem.isNode()) {
+            return false;
+          }
+          if (elem.data("birthYear") < val[0]) {
+            return true;
+          }
+          if (elem.data("deathYear") > val[1]) {
+            return true;
+          }
+          return false;
+          // return elem.isNode() && elem.data("birthYear") < val[0] ;
+        })
+        .remove();
+      // console.log(x);
       setRemoved(result);
     }
-  };
-
-  const initMinMax = (elements: (NodeDefinition | EdgeDefinition)[]) => {
-    const minMaxDate = getMinMaxDate(elements);
-    setMinMaxDate(minMaxDate);
-    setRange(minMaxDate);
   };
 
   const rangeSlider = (
