@@ -8,39 +8,10 @@ import cola from "cytoscape-cola";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { loadGedcom } from "./loadGedcom";
-// import { Family } from "./types";
 import { useRange } from "./useRange";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
-
-// const famToNodes = (fam: Family) => {
-//   // console.log(fam);
-//   return [...fam.parents, ...fam.children];
-// };
-// const famToEdges = (fam: Family): EdgeDefinition[] => {
-//   // console.log(fam);
-//   const m = fam.parents[0];
-//   const p = fam.parents[1];
-//   return fam.children.flatMap((x) => {
-//     return [
-//       {
-//         data: {
-//           id: `${m.data.id}-${x.data.id}`,
-//           source: `${m.data.id}`,
-//           target: `${x.data.id}`,
-//         },
-//       },
-//       {
-//         data: {
-//           id: `${p.data.id}-${x.data.id}`,
-//           source: `${p.data.id}`,
-//           target: `${x.data.id}`,
-//         },
-//       },
-//     ];
-//   });
-// };
 
 const App: FC = () => {
   const [cy, setCy] = useState<cytoscape.Core>();
@@ -49,17 +20,7 @@ const App: FC = () => {
 
   useEffect(() => {
     const run = async () => {
-      const fam = await loadGedcom();
-      // const elements = [...famToNodes(fam), ...famToEdges(fam)];
-      // const elements = [...fam.parents, ...fam.children];
-      const elements = fam;
-      // console.log(elements);
-
-      // const elements = [
-      //   ...generateNodes(),
-      //   // ...generateLineairEdges(),
-      //   ...generateHierachicalEdges(),
-      // ];
+      const elements = await loadGedcom();
 
       initMinMax(elements);
 
@@ -124,7 +85,7 @@ const App: FC = () => {
 
           // var tippy = makeTippy(n, h('div', {}, $links));
           // tippy(n.popperRef())
-          alert(`${nodeData.name}
+          alert(`${nodeData.names}
 
 ${nodeData.s === "M" ? "Male" : "Female"}          
 Born: ${nodeData.birthDateString}

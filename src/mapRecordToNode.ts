@@ -5,17 +5,6 @@ import {
 } from "read-gedcom";
 
 const getRenderedName = (rec: SelectionIndividualRecord): string => {
-  //   console.log(
-  //     rec,
-  //     "| birth",
-  //     // @ts-expect-error
-  //     rec.getEventBirth().getDate().valueAsDate()[0].date.year.value,
-  //     rec.getEventBirth().getDate().value()[0],
-  //     "| death",
-  //     rec.getEventDeath().getDate().value()[0],
-  //     "| s",
-  //     rec.getSex().value()[0]
-  //   );
   const names =
     rec.getName().getNickname().value()[0] ??
     rec.getName().getGivenName().value()[0] ??
@@ -26,6 +15,14 @@ const getRenderedName = (rec: SelectionIndividualRecord): string => {
     return names.split(" ")[0];
   }
   return names;
+};
+
+const getRenderedNames = (rec: SelectionIndividualRecord): string => {
+  const nick = rec.getName().getNickname().value()[0];
+  const nickFormatted = nick ? `"${nick}"` : "";
+  return `${rec.getName().getGivenName().value()[0] ?? ""} ${nickFormatted} ${
+    rec.getName().value()[0]
+  }`.trim();
 };
 
 const getColor = (s?: string): string | undefined => {
@@ -56,6 +53,7 @@ export const mapRecordToNode =
       data: {
         id: pointer,
         name: getRenderedName(record),
+        names: getRenderedNames(record),
         s,
         color: getColor(s),
         birthDateString: record.getEventBirth().getDate().value()[0],
