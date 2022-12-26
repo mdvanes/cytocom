@@ -1,4 +1,8 @@
-import cytoscape, { LayoutOptions, NodeSingular } from "cytoscape";
+import cytoscape, {
+  CollectionReturnValue,
+  LayoutOptions,
+  NodeSingular,
+} from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
 import "./App.css";
@@ -17,11 +21,44 @@ const App: FC = () => {
   const [cy, setCy] = useState<cytoscape.Core>();
   const [layout, setLayout] = useState<LayoutOptions>(dagreLayout);
   const { initMinMax, rangeSlider } = useRange(cy);
+  const [gedcomPath, setGedcomPath] = useState(
+    "https://mon.arbre.app/gedcoms/royal92.ged"
+  );
+  const [sources, setSources] = useState<Record<string, string>>();
+  const [selectedSource, setSelectedSource] = useState<string>();
+
+  const [removedForSource, setRemovedForSource] =
+    useState<CollectionReturnValue>();
+  const handleSourceChange: React.ChangeEventHandler<HTMLSelectElement> = (
+    evt
+  ) => {
+    if (removedForSource) {
+      removedForSource.restore();
+    }
+
+    const newSource = evt.target.value;
+    setSelectedSource(newSource);
+
+    if (cy && newSource) {
+      const result = cy
+        .filter((elem) => {
+          if (!elem.isNode()) {
+            return false;
+          }
+
+          return elem.data("sources").indexOf(newSource) === -1;
+        })
+        .remove();
+      // TODO this bugs when two filters are combined
+      setRemovedForSource(result);
+    }
+  };
 
   useEffect(() => {
     const run = async () => {
-      const elements = await loadGedcom();
+      const { elements, ...gedcom } = await loadGedcom(gedcomPath);
 
+      setSources(gedcom.sources);
       initMinMax(elements);
 
       const newCy = cytoscape({
@@ -117,7 +154,11 @@ const App: FC = () => {
 ${nodeData.s === "M" ? "Male" : "Female"}          
 Born: ${nodeData.birthDateString ?? ""}
 Death: ${nodeData.deathDateString ?? ""}
+Sources: ${nodeData.sources.map((source: string) => {
+            return sources ? sources[source] : "";
+          })}
 ID: ${nodeData.id}`);
+
           // ${JSON.stringify(nodeData, null, 2)}`);
         });
       });
@@ -154,7 +195,7 @@ ID: ${nodeData.id}`);
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [gedcomPath]);
 
   return (
     <div className="App">
@@ -178,13 +219,32 @@ ID: ${nodeData.id}`);
           id="mybutton"
           className="secondary"
           onClick={(evt) => {
-            console.log("click");
+            if (gedcomPath === "/cytocom/example.ged") {
+              setGedcomPath("https://mon.arbre.app/gedcoms/royal92.ged");
+            } else {
+              setGedcomPath("/cytocom/example.ged");
+            }
           }}
         >
-          test tippy
+          toggle gedcom (test tippy)
         </button>
 
         {rangeSlider}
+
+        <div>
+          <select name="sources" id="sources" onChange={handleSourceChange}>
+            <option value="">none</option>
+            {sources &&
+              Object.entries(sources).map(([id, name]) => (
+                <option key={id} value={id}>
+                  {name}
+                </option>
+              ))}
+          </select>
+          {selectedSource &&
+            sources &&
+            ` ${selectedSource} ${sources[selectedSource]}`}
+        </div>
       </div>
     </div>
   );
