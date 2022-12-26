@@ -5,7 +5,12 @@ export const getMinMaxDate = (
 ): [number, number] =>
   elements.reduce(
     (acc, next) => {
-      if ("birthYear" in next.data && next.data.birthYear < acc[0]) {
+      if (
+        "birthYear" in next.data &&
+        // Sometimes a birthYear will be set to 0 if unknown
+        next.data.birthYear !== 0 &&
+        next.data.birthYear < acc[0]
+      ) {
         acc[0] = next.data.birthYear - 1;
       }
       if ("deathYear" in next.data && next.data.deathYear > acc[1]) {
