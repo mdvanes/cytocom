@@ -60,6 +60,32 @@ const App: FC = () => {
               "curve-style": "bezier",
             },
           },
+
+          {
+            selector: "node.highlight",
+            style: {
+              "border-color": "green",
+              "border-width": "2px",
+            },
+          },
+
+          {
+            selector: "node.semitransp",
+            style: { opacity: 0.5 },
+          },
+
+          {
+            selector: "edge.highlight",
+            style: {
+              "line-color": "green",
+              "target-arrow-color": "green",
+              width: 1.5,
+            },
+          },
+          {
+            selector: "edge.semitransp",
+            style: { opacity: 0.2 },
+          },
         ],
 
         layout,
@@ -77,6 +103,7 @@ const App: FC = () => {
 
       setCy(newCy);
 
+      // TODO merge this with tap/node
       newCy.nodes().forEach((n) => {
         n.on("click", (ev) => {
           // console.log(ev, n, n.id, n.data);
@@ -88,11 +115,35 @@ const App: FC = () => {
           alert(`${nodeData.names}
 
 ${nodeData.s === "M" ? "Male" : "Female"}          
-Born: ${nodeData.birthDateString}
-Death: ${nodeData.deathDateString}
+Born: ${nodeData.birthDateString ?? ""}
+Death: ${nodeData.deathDateString ?? ""}
 ID: ${nodeData.id}`);
           // ${JSON.stringify(nodeData, null, 2)}`);
         });
+      });
+
+      newCy.on("tap", "node", function (evt) {
+        const target: any = evt.target;
+        // const node = target[0]._private.data;
+        // console.log("tapped ", node.name);
+
+        newCy
+          .elements()
+          .difference(target.outgoers())
+          .not(target)
+          .addClass("semitransp");
+        target.addClass("highlight").outgoers().addClass("highlight");
+      });
+
+      newCy.on("click", function (evt) {
+        //select either edges or nodes to remove the styles
+        //var edges = cy.edges();
+        //var nodes = cy.nodes()
+        // edges.removeClass('semitransp');
+        // nodes.removeClass('semitransp');
+        //you can select all elements and remove the styles
+        newCy.elements().removeClass("semitransp");
+        newCy.elements().removeClass("highlight");
       });
     };
 
