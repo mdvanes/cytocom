@@ -42,3 +42,8 @@ button {
   color: rgb(205, 205, 205);
   background-color: transparent;
 }
+
+.node-popup {
+  border: 1px solid white;
+  border-radius: 10px;
+}

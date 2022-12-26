@@ -2,6 +2,7 @@ import cytoscape, {
   CollectionReturnValue,
   LayoutOptions,
   NodeSingular,
+  SingularData,
 } from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
@@ -13,9 +14,13 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
+import popper, { getPopperInstance } from "cytoscape-popper";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
+cytoscape.use(popper);
+
+type PopperInstance = ReturnType<getPopperInstance<unknown>>;
 
 const App: FC = () => {
   const [cy, setCy] = useState<cytoscape.Core>();
@@ -27,6 +32,7 @@ const App: FC = () => {
   const [sources, setSources] = useState<Record<string, string>>();
   const [selectedSource, setSelectedSource] = useState<string>();
   const [images, setImages] = useState<Record<string, string>>();
+  const [nodePopper, setNodePopper] = useState<PopperInstance | undefined>();
 
   const [removedForSource, setRemovedForSource] =
     useState<CollectionReturnValue>();
@@ -151,31 +157,45 @@ const App: FC = () => {
 
       setCy(newCy);
 
-      // TODO convert to `newCy.on("tap", "node", function`
-      newCy.nodes().forEach((n) => {
-        n.on("click", (ev) => {
-          // console.log(ev, n, n.id, n.data);
-          const nodeData = n.data();
-          console.log(`Clicked on node for ${nodeData.name}`, nodeData);
+      newCy.on("tap", "node", (evt) => {
+        const target: NodeSingular = evt.target;
 
-          // var tippy = makeTippy(n, h('div', {}, $links));
-          // tippy(n.popperRef())
-          alert(`${nodeData.names}
+        // console.log(ev, n, n.id, n.data);
+        const nodeData = target.data();
+        console.log(`Clicked on node for ${nodeData.name}`, nodeData);
 
-${nodeData.s === "M" ? "Male" : "Female"}          
-Born: ${nodeData.birthDateString ?? ""}
-${nodeData.deathDateString ? `Death: ${nodeData.deathDateString}` : ""}
-Sources: ${nodeData.sources.map((source: string) => {
-            return sources ? sources[source] : "";
-          })}
-Image: ${nodeData.image}
-ID: ${nodeData.id}`);
+        // var tippy = makeTippy(n, h('div', {}, $links));
+        // tippy(n.popperRef())
+        //         alert(`${nodeData.names}
 
-          // ${JSON.stringify(nodeData, null, 2)}`);
+        // ${nodeData.s === "M" ? "Male" : "Female"}
+        // Born: ${nodeData.birthDateString ?? ""}
+        // ${nodeData.deathDateString ? `Death: ${nodeData.deathDateString}` : ""}
+        // Sources: ${nodeData.sources.map((source: string) => {
+        //           return sources ? sources[source] : "";
+        //         })}
+        // Image: ${nodeData.image}
+        // ID: ${nodeData.id}`);
+
+        // ${JSON.stringify(nodeData, null, 2)}`);
+
+        const newNodePopper = target.popper({
+          content: () => {
+            const div = document.createElement("div");
+            div.className = "node-popup";
+            div.innerHTML = `<h2>${nodeData.names}</h2>
+            Image: <img src="${images && images[nodeData.image]}" />
+            ID: ${nodeData.id}`;
+            document.body.appendChild(div);
+            return div;
+          },
+          // popper: {}, // my popper options here
         });
+        // console.log(newNodePopper);
+        setNodePopper(newNodePopper);
       });
 
-      newCy.on("mouseover", "node", function (evt) {
+      newCy.on("mouseover", "node", (evt) => {
         const target: any = evt.target;
         // const node = target[0]._private.data;
         // console.log("tapped ", node.name);
@@ -188,7 +208,7 @@ ID: ${nodeData.id}`);
         target.addClass("highlight").outgoers().addClass("highlight");
       });
 
-      newCy.on("mouseout", "node", function (evt) {
+      newCy.on("mouseout", "node", (evt) => {
         //select either edges or nodes to remove the styles
         //var edges = cy.edges();
         //var nodes = cy.nodes()
@@ -198,6 +218,16 @@ ID: ${nodeData.id}`);
         newCy.elements().removeClass("semitransp");
         newCy.elements().removeClass("highlight");
       });
+
+      // newCy.on("tap", () => {
+      //   // const x = (newCy.nodes() as any).popper();
+      //   console.log("clicked outside", nodePopper);
+      //   // newCy.elements().popper().destroy();
+      //   if (nodePopper) {
+      //     nodePopper.destroy();
+      //     setNodePopper(undefined);
+      //   }
+      // });
     };
 
     run();
