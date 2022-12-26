@@ -1,4 +1,4 @@
-import { NodeDefinition } from "cytoscape";
+import { EdgeDefinition, NodeDefinition } from "cytoscape";
 import {
   SelectionIndividualEvent,
   SelectionIndividualRecord,
@@ -46,22 +46,35 @@ const getYear = (familyEvent: SelectionIndividualEvent): number => {
   return 0;
 };
 
-export const mapRecordToNode = (
-  record: SelectionIndividualRecord
-): NodeDefinition => {
-  const s = `${record.getSex().value()[0]}`;
-  const pointer = `${record.pointer()[0]}`;
+export const mapRecordToNode =
+  (parents: SelectionIndividualRecord[]) =>
+  (record: SelectionIndividualRecord): (NodeDefinition | EdgeDefinition)[] => {
+    const s = `${record.getSex().value()[0]}`;
+    const pointer = `${record.pointer()[0]}`;
 
-  return {
-    data: {
-      id: pointer,
-      name: getRenderedName(record),
-      s,
-      color: getColor(s),
-      birthDateString: record.getEventBirth().getDate().value()[0],
-      birthYear: getYear(record.getEventBirth()),
-      deathDateString: record.getEventDeath().getDate().value()[0],
-      deathYear: getYear(record.getEventDeath()),
-    },
+    const node = {
+      data: {
+        id: pointer,
+        name: getRenderedName(record),
+        s,
+        color: getColor(s),
+        birthDateString: record.getEventBirth().getDate().value()[0],
+        birthYear: getYear(record.getEventBirth()),
+        deathDateString: record.getEventDeath().getDate().value()[0],
+        deathYear: getYear(record.getEventDeath()),
+      },
+    };
+
+    const edgesToParents = parents.map((parent) => {
+      const parentPointer = `${parent.pointer()[0]}`;
+      return {
+        data: {
+          id: `${parentPointer}-${pointer}`,
+          source: `${parentPointer}`,
+          target: `${pointer}`,
+        },
+      };
+    });
+
+    return [node, ...edgesToParents];
   };
-};

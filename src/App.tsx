@@ -1,8 +1,4 @@
-import cytoscape, {
-  EdgeDefinition,
-  LayoutOptions,
-  NodeSingular,
-} from "cytoscape";
+import cytoscape, { LayoutOptions, NodeSingular } from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
 import "./App.css";
@@ -12,40 +8,39 @@ import cola from "cytoscape-cola";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { loadGedcom } from "./loadGedcom";
-import { Family } from "./types";
+// import { Family } from "./types";
 import { useRange } from "./useRange";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
 
-const famToNodes = (fam: Family) => {
-  // console.log(fam);
-  return [...fam.parents, ...fam.children];
-};
-
-const famToEdges = (fam: Family): EdgeDefinition[] => {
-  // console.log(fam);
-  const m = fam.parents[0];
-  const p = fam.parents[1];
-  return fam.children.flatMap((x) => {
-    return [
-      {
-        data: {
-          id: `${m.data.id}-${x.data.id}`,
-          source: `${m.data.id}`,
-          target: `${x.data.id}`,
-        },
-      },
-      {
-        data: {
-          id: `${p.data.id}-${x.data.id}`,
-          source: `${p.data.id}`,
-          target: `${x.data.id}`,
-        },
-      },
-    ];
-  });
-};
+// const famToNodes = (fam: Family) => {
+//   // console.log(fam);
+//   return [...fam.parents, ...fam.children];
+// };
+// const famToEdges = (fam: Family): EdgeDefinition[] => {
+//   // console.log(fam);
+//   const m = fam.parents[0];
+//   const p = fam.parents[1];
+//   return fam.children.flatMap((x) => {
+//     return [
+//       {
+//         data: {
+//           id: `${m.data.id}-${x.data.id}`,
+//           source: `${m.data.id}`,
+//           target: `${x.data.id}`,
+//         },
+//       },
+//       {
+//         data: {
+//           id: `${p.data.id}-${x.data.id}`,
+//           source: `${p.data.id}`,
+//           target: `${x.data.id}`,
+//         },
+//       },
+//     ];
+//   });
+// };
 
 const App: FC = () => {
   const [cy, setCy] = useState<cytoscape.Core>();
@@ -55,7 +50,9 @@ const App: FC = () => {
   useEffect(() => {
     const run = async () => {
       const fam = await loadGedcom();
-      const elements = [...famToNodes(fam), ...famToEdges(fam)];
+      // const elements = [...famToNodes(fam), ...famToEdges(fam)];
+      const elements = [...fam.parents, ...fam.children];
+
       // const elements = [
       //   ...generateNodes(),
       //   // ...generateLineairEdges(),

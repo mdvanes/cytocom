@@ -1,6 +1,6 @@
-import { NodeDefinition } from "cytoscape";
+import { EdgeDefinition, NodeDefinition } from "cytoscape";
 
 export interface Family {
-  parents: NodeDefinition[];
-  children: NodeDefinition[];
+  parents: (NodeDefinition | EdgeDefinition)[];
+  children: (NodeDefinition | EdgeDefinition)[];
 }

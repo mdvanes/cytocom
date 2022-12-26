@@ -18,16 +18,17 @@ export const loadGedcom = async (): Promise<Family> => {
   // console.log(victoria.getName().getNickname().value());
   // console.log(fam.getHusband().getIndividualRecord().getName().value());
   // console.log(fam.getChild().getIndividualRecord().getName().value());
+  const parent2 = fam.getHusband().getIndividualRecord();
   const result = {
     parents: [
-      mapRecordToNode(victoria),
-      mapRecordToNode(fam.getHusband().getIndividualRecord()),
+      ...mapRecordToNode([])(victoria),
+      ...mapRecordToNode([])(parent2),
     ],
     children: fam
       .getChild()
       .getIndividualRecord()
       .arraySelect()
-      .map(mapRecordToNode),
+      .flatMap(mapRecordToNode([victoria, parent2])),
   };
   // console.log(JSON.stringify(result, null, 2));
   return result;
