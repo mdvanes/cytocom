@@ -2,7 +2,6 @@ import cytoscape, {
   CollectionReturnValue,
   LayoutOptions,
   NodeSingular,
-  SingularData,
 } from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
@@ -14,13 +13,47 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
-import popper, { getPopperInstance } from "cytoscape-popper";
+// import popper, { getPopperInstance } from "cytoscape-popper";
+// import tippyC from "cytoscape.js-tippy";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
-cytoscape.use(popper);
+// cytoscape.use(popper);
+// cytoscape.use(tippy);
 
-type PopperInstance = ReturnType<getPopperInstance<unknown>>;
+// var makeTippy = function (ele: any, text: string) {
+//   var ref = ele.popperRef();
+
+//   // Since tippy constructor requires DOM element/elements, create a placeholder
+//   var dummyDomEle = document.createElement("div");
+
+//   var tip = tippy(dummyDomEle, {
+//     getReferenceClientRect: ref.getBoundingClientRect,
+//     trigger: "manual", // mandatory
+//     // dom element inside the tippy:
+//     content: function () {
+//       // function can be better for performance
+//       var div = document.createElement("div");
+
+//       div.innerHTML = text;
+
+//       return div;
+//     },
+//     // your own preferences:
+//     arrow: true,
+//     placement: "bottom",
+//     hideOnClick: false,
+//     sticky: "reference",
+
+//     // if interactive:
+//     interactive: true,
+//     appendTo: document.body, // or append dummyDomEle to document.body
+//   });
+
+//   return tip;
+// };
+
+// type PopperInstance = ReturnType<getPopperInstance<unknown>>;
 
 const App: FC = () => {
   const [cy, setCy] = useState<cytoscape.Core>();
@@ -32,7 +65,7 @@ const App: FC = () => {
   const [sources, setSources] = useState<Record<string, string>>();
   const [selectedSource, setSelectedSource] = useState<string>();
   const [images, setImages] = useState<Record<string, string>>();
-  const [nodePopper, setNodePopper] = useState<PopperInstance | undefined>();
+  const [details, setDetails] = useState<any>();
 
   const [removedForSource, setRemovedForSource] =
     useState<CollectionReturnValue>();
@@ -157,43 +190,79 @@ const App: FC = () => {
 
       setCy(newCy);
 
-      newCy.on("tap", "node", (evt) => {
+      newCy.on("tap", "node", function (evt) {
+        // var popperElement = evt.target.scratch("tippy-popper");
+        // evt.target.scratch("tippy").show(popperElement);
+
         const target: NodeSingular = evt.target;
-
-        // console.log(ev, n, n.id, n.data);
         const nodeData = target.data();
-        console.log(`Clicked on node for ${nodeData.name}`, nodeData);
 
-        // var tippy = makeTippy(n, h('div', {}, $links));
-        // tippy(n.popperRef())
-        //         alert(`${nodeData.names}
+        setDetails(
+          <div>
+            <h2>{nodeData.names}</h2>
+            {nodeData.s === "M" ? "Male" : "Female"}
+            <p>Born: {nodeData.birthDateString ?? ""}</p>
+            {nodeData.deathDateString
+              ? `Death: ${nodeData.deathDateString}`
+              : ""}
+            <p>Sources: </p>
+            {nodeData.sources.map((source: string) => {
+              return sources ? sources[source] : "";
+            })}
+            {/* Image: {nodeData.image} */}
+            {nodeData.image && images && (
+              <img src={images[nodeData.image]} width="100" alt="" />
+            )}
+            <p>ID: {nodeData.id}</p>
+          </div>
+        );
+        // const tippyInstance = makeTippy(target, "foo");
+        // tippyInstance.show();
+        // tippyInstance.reference;
 
-        // ${nodeData.s === "M" ? "Male" : "Female"}
-        // Born: ${nodeData.birthDateString ?? ""}
-        // ${nodeData.deathDateString ? `Death: ${nodeData.deathDateString}` : ""}
-        // Sources: ${nodeData.sources.map((source: string) => {
-        //           return sources ? sources[source] : "";
-        //         })}
-        // Image: ${nodeData.image}
-        // ID: ${nodeData.id}`);
-
-        // ${JSON.stringify(nodeData, null, 2)}`);
-
-        const newNodePopper = target.popper({
-          content: () => {
-            const div = document.createElement("div");
-            div.className = "node-popup";
-            div.innerHTML = `<h2>${nodeData.names}</h2>
-            Image: <img src="${images && images[nodeData.image]}" />
-            ID: ${nodeData.id}`;
-            document.body.appendChild(div);
-            return div;
-          },
-          // popper: {}, // my popper options here
-        });
-        // console.log(newNodePopper);
-        setNodePopper(newNodePopper);
+        // setNodeTippy(tippyInstance.reference);
+        // setTimeout(() => {
+        //   tippyA.destroy();
+        // }, 1000);
       });
+
+      // newCy.on("tap", "node", (evt) => {
+      //   const target: NodeSingular = evt.target;
+
+      //   // console.log(ev, n, n.id, n.data);
+      //   const nodeData = target.data();
+      //   console.log(`Clicked on node for ${nodeData.name}`, nodeData);
+
+      //   // var tippy = makeTippy(n, h('div', {}, $links));
+      //   // tippy(n.popperRef())
+      //   //         alert(`${nodeData.names}
+
+      //   // ${nodeData.s === "M" ? "Male" : "Female"}
+      //   // Born: ${nodeData.birthDateString ?? ""}
+      //   // ${nodeData.deathDateString ? `Death: ${nodeData.deathDateString}` : ""}
+      //   // Sources: ${nodeData.sources.map((source: string) => {
+      //   //           return sources ? sources[source] : "";
+      //   //         })}
+      //   // Image: ${nodeData.image}
+      //   // ID: ${nodeData.id}`);
+
+      //   // ${JSON.stringify(nodeData, null, 2)}`);
+
+      //   const newNodePopper = target.popper({
+      //     content: () => {
+      //       const div = document.createElement("div");
+      //       div.className = "node-popup";
+      //       div.innerHTML = `<h2>${nodeData.names}</h2>
+      //       Image: <img src="${images && images[nodeData.image]}" />
+      //       ID: ${nodeData.id}`;
+      //       document.body.appendChild(div);
+      //       return div;
+      //     },
+      //     // popper: {}, // my popper options here
+      //   });
+      //   // console.log(newNodePopper);
+      //   setNodePopper(newNodePopper);
+      // });
 
       newCy.on("mouseover", "node", (evt) => {
         const target: any = evt.target;
@@ -219,13 +288,17 @@ const App: FC = () => {
         newCy.elements().removeClass("highlight");
       });
 
-      // newCy.on("tap", () => {
-      //   // const x = (newCy.nodes() as any).popper();
-      //   console.log("clicked outside", nodePopper);
-      //   // newCy.elements().popper().destroy();
-      //   if (nodePopper) {
-      //     nodePopper.destroy();
-      //     setNodePopper(undefined);
+      // newCy.on("click", () => {
+      //   // // const x = (newCy.nodes() as any).popper();
+      //   console.log("clicked outside", nodeTippy);
+      //   // // newCy.elements().popper().destroy();
+      //   // if (nodePopper) {
+      //   //   nodePopper.destroy();
+      //   //   setNodePopper(undefined);
+      //   // }
+      //   if (nodeTippy) {
+      //     nodeTippy.destroy();
+      //     setNodeTippy(undefined);
       //   }
       // });
     };
@@ -241,7 +314,10 @@ const App: FC = () => {
 
   return (
     <div className="App">
-      <div id="cy"></div>
+      <section>
+        <div id="cy"></div>
+        <aside>{details}</aside>
+      </section>
       <div className="actions">
         <button
           className="primary"
