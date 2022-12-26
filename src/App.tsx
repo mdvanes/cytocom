@@ -51,7 +51,9 @@ const App: FC = () => {
     const run = async () => {
       const fam = await loadGedcom();
       // const elements = [...famToNodes(fam), ...famToEdges(fam)];
-      const elements = [...fam.parents, ...fam.children];
+      // const elements = [...fam.parents, ...fam.children];
+      const elements = fam;
+      // console.log(elements);
 
       // const elements = [
       //   ...generateNodes(),
