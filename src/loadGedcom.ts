@@ -29,36 +29,15 @@ export const loadGedcom = async (
 ): Promise<{
   elements: (NodeDefinition | EdgeDefinition)[];
   sources: Record<string, string>;
+  images: Record<string, string>;
 }> => {
-  // const gedcom = await fetch("https://mon.arbre.app/gedcoms/royal92.ged")
-  // const gedcom = await fetch("/cytocom/example.ged")
   const gedcom = await fetch(path)
     .then((r) => r.arrayBuffer())
     .then(readGedcom);
 
   const families = gedcom.getFamilyRecord();
 
-  console.log("note", gedcom.getNoteRecord().arraySelect());
-  console.log(
-    "source",
-    gedcom
-      .getSourceRecord()
-      .arraySelect()
-      .map((m) => ({
-        // f: m.getFileReference().value(),
-        n: m.getDescriptiveTitle().value(),
-      }))
-  );
-  console.log(
-    "media",
-    gedcom
-      .getMultimediaRecord()
-      .arraySelect()
-      .map((m) => ({
-        f: m.getFileReference().value(),
-        n: m.getNote().value(),
-      }))
-  );
+  // console.log("note", gedcom.getNoteRecord().arraySelect());
 
   const mappedFamilies = families.arraySelect().slice(0, 30).map(mapFamily);
   const result = mappedFamilies.reduce<(NodeDefinition | EdgeDefinition)[]>(
@@ -82,8 +61,20 @@ export const loadGedcom = async (
       ])
   );
 
+  // TODO this currently only works if the value is a publically accessible URI
+  const images = Object.fromEntries(
+    gedcom
+      .getMultimediaRecord()
+      .arraySelect()
+      .map((source) => [
+        source.pointer()[0] ?? "",
+        source.getFileReference().value()[0] ?? "",
+      ])
+  );
+
   return {
     elements: result,
     sources,
+    images,
   };
 };

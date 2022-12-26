@@ -26,6 +26,7 @@ const App: FC = () => {
   );
   const [sources, setSources] = useState<Record<string, string>>();
   const [selectedSource, setSelectedSource] = useState<string>();
+  const [images, setImages] = useState<Record<string, string>>();
 
   const [removedForSource, setRemovedForSource] =
     useState<CollectionReturnValue>();
@@ -59,6 +60,7 @@ const App: FC = () => {
       const { elements, ...gedcom } = await loadGedcom(gedcomPath);
 
       setSources(gedcom.sources);
+      setImages(gedcom.images);
       initMinMax(elements);
 
       const newCy = cytoscape({
@@ -81,9 +83,18 @@ const App: FC = () => {
               "background-color": "data(color)",
               // "background-color": "#4e4e4e",
               label: "data(name)",
+              "background-fit": "cover",
               // NOTE: This works, but does not hide the edges. Also, how to call this after the graph is rendered?
               // visibility: (n: any) =>
               //   n.data("birthYear") < 1821 ? "hidden" : "visible",
+            },
+          },
+          {
+            selector: "node[image]",
+            style: {
+              "background-image": (n) => {
+                return images ? images[n.data("image")] : "";
+              },
             },
           },
 
@@ -140,7 +151,7 @@ const App: FC = () => {
 
       setCy(newCy);
 
-      // TODO merge this with tap/node
+      // TODO convert to `newCy.on("tap", "node", function`
       newCy.nodes().forEach((n) => {
         n.on("click", (ev) => {
           // console.log(ev, n, n.id, n.data);
@@ -153,17 +164,18 @@ const App: FC = () => {
 
 ${nodeData.s === "M" ? "Male" : "Female"}          
 Born: ${nodeData.birthDateString ?? ""}
-Death: ${nodeData.deathDateString ?? ""}
+${nodeData.deathDateString ? `Death: ${nodeData.deathDateString}` : ""}
 Sources: ${nodeData.sources.map((source: string) => {
             return sources ? sources[source] : "";
           })}
+Image: ${nodeData.image}
 ID: ${nodeData.id}`);
 
           // ${JSON.stringify(nodeData, null, 2)}`);
         });
       });
 
-      newCy.on("tap", "node", function (evt) {
+      newCy.on("mouseover", "node", function (evt) {
         const target: any = evt.target;
         // const node = target[0]._private.data;
         // console.log("tapped ", node.name);
@@ -176,7 +188,7 @@ ID: ${nodeData.id}`);
         target.addClass("highlight").outgoers().addClass("highlight");
       });
 
-      newCy.on("click", function (evt) {
+      newCy.on("mouseout", "node", function (evt) {
         //select either edges or nodes to remove the styles
         //var edges = cy.edges();
         //var nodes = cy.nodes()

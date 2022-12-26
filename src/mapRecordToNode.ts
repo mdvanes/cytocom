@@ -60,10 +60,8 @@ export const mapRecordToNode =
         birthYear: getYear(record.getEventBirth()),
         deathDateString: record.getEventDeath().getDate().value()[0],
         deathYear: getYear(record.getEventDeath()),
-        sources: record
-          .getSourceCitation()
-          .arraySelect()
-          .flatMap((sourceCitation) => sourceCitation.value()),
+        sources: record.getSourceCitation().value(),
+        image: record.getMultimedia().value()[0],
       },
     };
 
