@@ -1,19 +1,15 @@
-import cytoscape, {
-  CollectionReturnValue,
-  LayoutOptions,
-  NodeSingular,
-} from "cytoscape";
+import cytoscape, { LayoutOptions, NodeSingular } from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
 import "./App.css";
-import { dagreLayout, rotateLayout } from "./layouts";
+import { dagreLayout } from "./layouts";
 // @ts-expect-error
 import cola from "cytoscape-cola";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
+import { Actions } from "./actions/Actions";
 import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
-import { Actions } from "./actions/Actions";
 // import popper, { getPopperInstance } from "cytoscape-popper";
 // import tippyC from "cytoscape.js-tippy";
 
@@ -64,38 +60,9 @@ const App: FC = () => {
     "https://mon.arbre.app/gedcoms/royal92.ged"
   );
   const [sources, setSources] = useState<Record<string, string>>();
-  // const [selectedSource, setSelectedSource] = useState<string>();
   const [images, setImages] = useState<Record<string, string>>();
   const [details, setDetails] = useState<any>();
   const [showDetails, setShowDetails] = useState(true);
-
-  // const [removedForSource, setRemovedForSource] =
-  //   useState<CollectionReturnValue>();
-
-  // const handleSourceChange: React.ChangeEventHandler<HTMLSelectElement> = (
-  //   evt
-  // ) => {
-  //   if (removedForSource) {
-  //     removedForSource.restore();
-  //   }
-
-  //   const newSource = evt.target.value;
-  //   setSelectedSource(newSource);
-
-  //   if (cy && newSource) {
-  //     const result = cy
-  //       .filter((elem) => {
-  //         if (!elem.isNode()) {
-  //           return false;
-  //         }
-
-  //         return elem.data("sources").indexOf(newSource) === -1;
-  //       })
-  //       .remove();
-  //     // TODO this bugs when two filters are combined
-  //     setRemovedForSource(result);
-  //   }
-  // };
 
   useEffect(() => {
     const run = async () => {
@@ -329,73 +296,15 @@ const App: FC = () => {
         <div id="cy"></div>
         <aside>{details}</aside>
       </section>
+
       <Actions
+        setLayout={setLayout}
         setGedcomPath={setGedcomPath}
         rangeSlider={rangeSlider}
         setShowDetails={setShowDetails}
         cy={cy}
         sources={sources}
       />
-      <div className="actions">
-        {/* <button
-          className="primary"
-          onClick={() => {
-            if (cy) {
-              const newLayout = rotateLayout(layout);
-              const cWithLayout = cy.layout(newLayout);
-              cWithLayout.run();
-              setLayout(newLayout);
-            }
-          }}
-        >
-          change layout [{layout.name}]
-        </button> */}
-
-        {/* <div>
-          <select
-            name="gedcom"
-            id="gedcom"
-            onChange={(evt) => {
-              if (evt.target.value) {
-                setGedcomPath(evt.target.value);
-              }
-            }}
-          >
-            <option value="https://mon.arbre.app/gedcoms/royal92.ged">
-              Royal Family
-            </option>
-            <option value="/cytocom/7sisters.ged">Seven Sisters</option>
-            <option value="/cytocom/example.ged">Example</option>
-          </select>
-        </div> */}
-
-        {/* {rangeSlider} */}
-
-        {/* <div>
-          <select name="sources" id="sources" onChange={handleSourceChange}>
-            <option value="">none</option>
-            {sources &&
-              Object.entries(sources).map(([id, name]) => (
-                <option key={id} value={id}>
-                  {name}
-                </option>
-              ))}
-          </select>
-          {selectedSource &&
-            sources &&
-            ` ${selectedSource} ${sources[selectedSource]}`}
-        </div> */}
-
-        {/* <button
-          id="mybutton"
-          className="secondary"
-          onClick={() => {
-            setShowDetails((prev) => !prev);
-          }}
-        >
-          details
-        </button> */}
-      </div>
     </div>
   );
 };
