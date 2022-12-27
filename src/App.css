@@ -11,17 +11,21 @@ section {
   display: flex;
 }
 
-aside {
+.show-details aside {
   padding: 20px;
-  /* word-break: break-all; */
   width: 200px;
+  /* word-break: break-all; */
 }
 
-#cy {
+.App #cy {
   background-color: #1b1b1b;
-  width: calc(100vw - 200px);
+  width: 100vw;
   height: calc(100vh - 80px);
   display: block;
+}
+
+.show-details #cy {
+  width: calc(100vw - 200px);
 }
 
 .actions {

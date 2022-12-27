@@ -66,6 +66,7 @@ const App: FC = () => {
   const [selectedSource, setSelectedSource] = useState<string>();
   const [images, setImages] = useState<Record<string, string>>();
   const [details, setDetails] = useState<any>();
+  const [showDetails, setShowDetails] = useState(true);
 
   const [removedForSource, setRemovedForSource] =
     useState<CollectionReturnValue>();
@@ -132,7 +133,9 @@ const App: FC = () => {
             selector: "node[image]",
             style: {
               "background-image": (n) => {
-                return images ? images[n.data("image")] : "";
+                // NOTE "images" sometimes becomes the empty object when loading new gedcom in which case cytoscape logs an error, so prevent returning undefined by returning an image that does not exist
+                const src = gedcom.images && gedcom.images[n.data("image")];
+                return src || "example.png";
               },
             },
           },
@@ -309,11 +312,17 @@ const App: FC = () => {
       content: "some tippy content",
     });
 
+    return () => {
+      if (cy) {
+        cy.destroy();
+      }
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gedcomPath]);
 
   return (
-    <div className="App">
+    <div className={`App ${showDetails ? "show-details" : ""}`}>
       <section>
         <div id="cy"></div>
         <aside>{details}</aside>
@@ -363,6 +372,15 @@ const App: FC = () => {
             sources &&
             ` ${selectedSource} ${sources[selectedSource]}`}
         </div>
+
+        <button
+          className="secondary"
+          onClick={() => {
+            setShowDetails((prev) => !prev);
+          }}
+        >
+          details
+        </button>
       </div>
     </div>
   );
