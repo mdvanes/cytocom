@@ -3,7 +3,7 @@
 2 VERS 5.1.5
 2 NAME Gramps
 1 DATE 27 DEC 2022
-2 TIME 19:47:49
+2 TIME 20:01:55
 1 SUBM @SUBM@
 1 FILE 7sisters.ged
 1 COPR Copyright (c) 2022 .
@@ -63,9 +63,10 @@
 1 FAMC @F0004@
 2 PEDI birth
 1 SOUR @S0001@
+1 OBJE @O0000@
 1 CHAN
 2 DATE 27 DEC 2022
-3 TIME 18:47:08
+3 TIME 19:01:44
 0 @I0003@ INDI
 1 NAME Cristina Izabela /Carvalho/
 2 GIVN Cristina Izabela
@@ -257,4 +258,11 @@
 1 CHAN
 2 DATE 27 DEC 2022
 3 TIME 18:34:58
+0 @O0000@ OBJE
+1 FILE https://mdvanes.github.io/cytocom/7sisters/alcyone.jpg
+2 FORM jpg
+2 TITL alcyone
+1 CHAN
+2 DATE 27 DEC 2022
+3 TIME 19:01:43
 0 TRLR
