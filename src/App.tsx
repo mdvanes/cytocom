@@ -13,6 +13,7 @@ import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
+import { Actions } from "./actions/Actions";
 // import popper, { getPopperInstance } from "cytoscape-popper";
 // import tippyC from "cytoscape.js-tippy";
 
@@ -63,37 +64,38 @@ const App: FC = () => {
     "https://mon.arbre.app/gedcoms/royal92.ged"
   );
   const [sources, setSources] = useState<Record<string, string>>();
-  const [selectedSource, setSelectedSource] = useState<string>();
+  // const [selectedSource, setSelectedSource] = useState<string>();
   const [images, setImages] = useState<Record<string, string>>();
   const [details, setDetails] = useState<any>();
   const [showDetails, setShowDetails] = useState(true);
 
-  const [removedForSource, setRemovedForSource] =
-    useState<CollectionReturnValue>();
-  const handleSourceChange: React.ChangeEventHandler<HTMLSelectElement> = (
-    evt
-  ) => {
-    if (removedForSource) {
-      removedForSource.restore();
-    }
+  // const [removedForSource, setRemovedForSource] =
+  //   useState<CollectionReturnValue>();
 
-    const newSource = evt.target.value;
-    setSelectedSource(newSource);
+  // const handleSourceChange: React.ChangeEventHandler<HTMLSelectElement> = (
+  //   evt
+  // ) => {
+  //   if (removedForSource) {
+  //     removedForSource.restore();
+  //   }
 
-    if (cy && newSource) {
-      const result = cy
-        .filter((elem) => {
-          if (!elem.isNode()) {
-            return false;
-          }
+  //   const newSource = evt.target.value;
+  //   setSelectedSource(newSource);
 
-          return elem.data("sources").indexOf(newSource) === -1;
-        })
-        .remove();
-      // TODO this bugs when two filters are combined
-      setRemovedForSource(result);
-    }
-  };
+  //   if (cy && newSource) {
+  //     const result = cy
+  //       .filter((elem) => {
+  //         if (!elem.isNode()) {
+  //           return false;
+  //         }
+
+  //         return elem.data("sources").indexOf(newSource) === -1;
+  //       })
+  //       .remove();
+  //     // TODO this bugs when two filters are combined
+  //     setRemovedForSource(result);
+  //   }
+  // };
 
   useEffect(() => {
     const run = async () => {
@@ -327,8 +329,15 @@ const App: FC = () => {
         <div id="cy"></div>
         <aside>{details}</aside>
       </section>
+      <Actions
+        setGedcomPath={setGedcomPath}
+        rangeSlider={rangeSlider}
+        setShowDetails={setShowDetails}
+        cy={cy}
+        sources={sources}
+      />
       <div className="actions">
-        <button
+        {/* <button
           className="primary"
           onClick={() => {
             if (cy) {
@@ -340,9 +349,9 @@ const App: FC = () => {
           }}
         >
           change layout [{layout.name}]
-        </button>
+        </button> */}
 
-        <div>
+        {/* <div>
           <select
             name="gedcom"
             id="gedcom"
@@ -358,11 +367,11 @@ const App: FC = () => {
             <option value="/cytocom/7sisters.ged">Seven Sisters</option>
             <option value="/cytocom/example.ged">Example</option>
           </select>
-        </div>
+        </div> */}
 
-        {rangeSlider}
+        {/* {rangeSlider} */}
 
-        <div>
+        {/* <div>
           <select name="sources" id="sources" onChange={handleSourceChange}>
             <option value="">none</option>
             {sources &&
@@ -375,9 +384,9 @@ const App: FC = () => {
           {selectedSource &&
             sources &&
             ` ${selectedSource} ${sources[selectedSource]}`}
-        </div>
+        </div> */}
 
-        <button
+        {/* <button
           id="mybutton"
           className="secondary"
           onClick={() => {
@@ -385,7 +394,7 @@ const App: FC = () => {
           }}
         >
           details
-        </button>
+        </button> */}
       </div>
     </div>
   );
