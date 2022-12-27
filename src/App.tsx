@@ -179,7 +179,7 @@ const App: FC = () => {
               : ""}
             <p>Sources: </p>
             {nodeData.sources.map((source: string) => {
-              return sources ? sources[source] : "";
+              return gedcom.sources ? gedcom.sources[source] : "";
             })}
             {/* Image: {nodeData.image} */}
             {nodeData.image && images && (

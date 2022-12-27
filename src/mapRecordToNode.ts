@@ -10,7 +10,7 @@ const getRenderedName = (rec: SelectionIndividualRecord): string => {
     rec.getName().getGivenName().value()[0] ??
     rec.getName().value()[0] ??
     "";
-  // TODO this is making the invalid assumption that a single name can't contain a space, e.g. Mette Marit is a counter example.
+  // TODO this is making the invalid assumption that a single name can't contain a space, e.g. "Mette Marit" or "Pa Salt" are counter examples.
   if (names.indexOf(" ") > -1) {
     return names.split(" ")[0];
   }
@@ -20,9 +20,10 @@ const getRenderedName = (rec: SelectionIndividualRecord): string => {
 const getRenderedNames = (rec: SelectionIndividualRecord): string => {
   const nick = rec.getName().getNickname().value()[0];
   const nickFormatted = nick ? `"${nick}"` : "";
-  return `${rec.getName().getGivenName().value()[0] ?? ""} ${nickFormatted} ${
-    rec.getName().value()[0]
-  }`.trim();
+  // return `${rec.getName().getGivenName().value()[0] ?? ""} ${nickFormatted} ${
+  //   rec.getName().value()[0]
+  // }`.trim();
+  return `${nickFormatted} ${rec.getName().value()[0]}`.trim();
 };
 
 const getColor = (s?: string): string | undefined => {
@@ -32,7 +33,7 @@ const getColor = (s?: string): string | undefined => {
   if (s === "M") {
     return "#8cb4ff";
   }
-  return;
+  return "#ccc";
 };
 
 const getYear = (familyEvent: SelectionIndividualEvent): number => {
