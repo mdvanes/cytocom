@@ -309,7 +309,7 @@ const App: FC = () => {
     run();
 
     tippy("#mybutton", {
-      content: "some tippy content",
+      content: "click to toggle the detail view on the right",
     });
 
     return () => {
@@ -342,19 +342,23 @@ const App: FC = () => {
           change layout [{layout.name}]
         </button>
 
-        <button
-          id="mybutton"
-          className="secondary"
-          onClick={(evt) => {
-            if (gedcomPath === "/cytocom/example.ged") {
-              setGedcomPath("https://mon.arbre.app/gedcoms/royal92.ged");
-            } else {
-              setGedcomPath("/cytocom/example.ged");
-            }
-          }}
-        >
-          toggle gedcom (test tippy)
-        </button>
+        <div>
+          <select
+            name="gedcom"
+            id="gedcom"
+            onChange={(evt) => {
+              if (evt.target.value) {
+                setGedcomPath(evt.target.value);
+              }
+            }}
+          >
+            <option value="https://mon.arbre.app/gedcoms/royal92.ged">
+              Royal Family
+            </option>
+            <option value="/cytocom/7sisters.ged">Seven Sisters</option>
+            <option value="/cytocom/example.ged">Example</option>
+          </select>
+        </div>
 
         {rangeSlider}
 
@@ -374,6 +378,7 @@ const App: FC = () => {
         </div>
 
         <button
+          id="mybutton"
           className="secondary"
           onClick={() => {
             setShowDetails((prev) => !prev);

@@ -34,3 +34,10 @@ section {
   margin: 0 20px;
   width: calc(100vw - 40px);
 }
+
+.actions select {
+  background-color: #8cb4ff;
+  border: 0;
+  font-size: 18px;
+  padding: 5px 30px;
+}
