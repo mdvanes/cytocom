@@ -33,8 +33,13 @@ export const useRange = (cy: cytoscape.Core | undefined) => {
           if (!elem.isNode()) {
             return false;
           }
-          // TODO also if deathYear or birthYear out of range on the other end
-          if (elem.data("birthYear") < val[0]) {
+          if (elem.data("birthYear") === 0 && elem.data("deathYear") === 0) {
+            return false;
+          }
+          if (
+            elem.data("birthYear") < val[0] ||
+            elem.data("birthYear") > val[1]
+          ) {
             return true;
           }
           if (elem.data("deathYear") > val[1]) {
