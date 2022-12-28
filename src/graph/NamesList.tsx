@@ -6,7 +6,8 @@ const NameListItem: FC<{ name: MappedNames }> = ({ name }) => {
   const type = name.type === "birth" ? "¹" : "";
   return (
     <>
-      {name.given} {nick} <em>{name.sur}</em>
+      <span className="dim">{name.prefix}</span> {name.given} {nick}{" "}
+      <em>{name.sur}</em>
       {type}
     </>
   );

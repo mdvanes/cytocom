@@ -51,3 +51,7 @@ section {
   font-size: 80%;
   margin: 0;
 }
+
+.App aside .dim {
+  opacity: 0.5;
+}
