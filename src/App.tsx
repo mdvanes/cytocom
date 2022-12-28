@@ -11,8 +11,6 @@ import { Actions } from "./actions/Actions";
 import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
 import { loadState, saveState } from "./util/loadSaveState";
-import { MappedNames } from "./gedcom/mapNames";
-import { NamesList } from "./graph/NamesList";
 import { IndivDetails } from "./graph/IndivDetails";
 // import popper, { getPopperInstance } from "cytoscape-popper";
 // import tippyC from "cytoscape.js-tippy";
@@ -63,7 +61,7 @@ const App: FC = () => {
   const { initMinMax, rangeSlider } = useRange(cy);
   const [gedcomPath, setGedcomPath] = useState(loadedState.gedcomPath);
   const [sources, setSources] = useState<Record<string, string>>();
-  const [images, setImages] = useState<Record<string, string>>();
+  // const [images, setImages] = useState<Record<string, string>>();
   const [details, setDetails] = useState<any>();
   const [showDetails, setShowDetails] = useState(true);
 
@@ -76,7 +74,7 @@ const App: FC = () => {
       const { elements, ...gedcom } = await loadGedcom(gedcomPath);
 
       setSources(gedcom.sources);
-      setImages(gedcom.images);
+      // setImages(gedcom.images);
       initMinMax(elements);
 
       const newCy = cytoscape({
