@@ -3,6 +3,7 @@ import {
   SelectionIndividualEvent,
   SelectionIndividualRecord,
 } from "read-gedcom";
+import { getAdoptiveParentIds } from "./getAdoptiveParentIds";
 import { mapNames, MappedNames } from "./mapNames";
 
 // NOTE: used as Node label
@@ -46,6 +47,8 @@ export const mapRecordToNode =
     const s = `${record.getSex().value()[0]}`;
     const pointer = `${record.pointer()[0]}`;
 
+    const adoptiveParentIds = getAdoptiveParentIds(record);
+
     const mappedNames = getRenderedNames(record);
 
     const node = {
@@ -64,6 +67,7 @@ export const mapRecordToNode =
       },
     };
 
+    // TODO add edge without arrow between parents (dotted when not married)
     const edgesToParents = parents.map((parent) => {
       const parentPointer = `${parent.pointer()[0]}`;
       return {
@@ -71,6 +75,8 @@ export const mapRecordToNode =
           id: `${parentPointer}-${pointer}`,
           source: `${parentPointer}`,
           target: `${pointer}`,
+          style:
+            adoptiveParentIds.indexOf(parentPointer) > -1 ? "dashed" : "solid",
         },
       };
     });
