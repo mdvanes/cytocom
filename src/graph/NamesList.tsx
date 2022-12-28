@@ -25,8 +25,8 @@ export const NamesList: FC<{ names: MappedNames[] }> = ({ names }) => {
   const otherNames =
     names.length > 1 ? (
       <ul>
-        {names.slice(1).map((n) => (
-          <li key={n.given}>
+        {names.slice(1).map((n, i) => (
+          <li key={i}>
             <NameListItem name={n} />
           </li>
         ))}
