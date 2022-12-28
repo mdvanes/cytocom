@@ -1,10 +1,12 @@
 import { FC } from "react";
+import { loadState } from "../util/loadSaveState";
 
 export interface Props {
   setGedcomPath: (path: string) => void;
 }
 
 export const SelectGedcom: FC<Props> = ({ setGedcomPath }) => {
+  const loadedState = loadState();
   return (
     <div>
       <select
@@ -15,11 +17,12 @@ export const SelectGedcom: FC<Props> = ({ setGedcomPath }) => {
             setGedcomPath(evt.target.value);
           }
         }}
+        value={loadedState.gedcomPath}
       >
+        <option value="/cytocom/7sisters.ged">Seven Sisters</option>
         <option value="https://mon.arbre.app/gedcoms/royal92.ged">
           Royal Family
         </option>
-        <option value="/cytocom/7sisters.ged">Seven Sisters</option>
         <option value="/cytocom/example.ged">Example</option>
       </select>
     </div>
