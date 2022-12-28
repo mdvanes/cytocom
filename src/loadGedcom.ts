@@ -9,7 +9,8 @@ import { NodeDefinition, EdgeDefinition } from "cytoscape";
 
 const getParentEdge = (
   parent1: SelectionIndividualRecord,
-  parent2: SelectionIndividualRecord
+  parent2: SelectionIndividualRecord,
+  areMarried: boolean | null = false
 ): EdgeDefinition | { data: object } => {
   const parent1Pointer = parent1.pointer()[0];
   const parent2Pointer = parent2.pointer()[0];
@@ -22,6 +23,7 @@ const getParentEdge = (
             source: `${parent1Pointer}`,
             target: `${parent2Pointer}`,
             type: "parents",
+            style: areMarried ? "solid" : "dashed",
           },
         }
       : { data: {} };
@@ -32,7 +34,11 @@ const mapFamily = (fam: SelectionFamilyRecord): Family => {
   const parent1 = fam.getWife().getIndividualRecord();
   const parent2 = fam.getHusband().getIndividualRecord();
 
-  const parentEdge = getParentEdge(parent1, parent2);
+  const parentEdge = getParentEdge(
+    parent1,
+    parent2,
+    fam.getEventMarriage().valueAsHappened()[0]
+  );
 
   const result = {
     parents: [

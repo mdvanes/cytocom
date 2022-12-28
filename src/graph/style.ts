@@ -18,13 +18,25 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
         return n.data("deathYear") ? "2" : "0";
       },
       // border: "1px solid red",
-      "background-color": "data(color)",
       // "background-color": "#4e4e4e",
-      label: "data(name)",
       "background-fit": "cover",
       // NOTE: This works, but does not hide the edges. Also, how to call this after the graph is rendered?
       // visibility: (n: any) =>
       //   n.data("birthYear") < 1821 ? "hidden" : "visible",
+      // "background-color": "data(color)",
+      // label: "data(name)",
+    },
+  },
+  {
+    selector: "node[name]",
+    style: {
+      label: "data(name)",
+    },
+  },
+  {
+    selector: "node[color]",
+    style: {
+      "background-color": "data(color)",
     },
   },
   {
@@ -48,7 +60,7 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
       "line-color": (n) => {
         const type = n.data("type");
         if (type && type === "parents") {
-          return "purple";
+          return "#bea5ff";
         }
         return "#afa100";
       },

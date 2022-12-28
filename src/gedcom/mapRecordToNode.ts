@@ -66,7 +66,6 @@ export const mapRecordToNode =
       },
     };
 
-    // TODO add edge without arrow between parents (dotted when not married)
     const edgesToParents = parents.map((parent) => {
       const parentPointer = `${parent.pointer()[0]}`;
       return {
