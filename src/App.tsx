@@ -169,22 +169,36 @@ const App: FC = () => {
         const target: NodeSingular = evt.target;
         const nodeData = target.data();
 
+        const getGenderSign = (s: string): string => {
+          if (s === "M") {
+            return "♂️";
+          }
+          if (s === "F") {
+            return "♀️";
+          }
+          return "";
+        };
+
         setDetails(
           <div>
             <h2>{nodeData.names}</h2>
-            {nodeData.s === "M" ? "Male" : "Female"}
-            <p>Born: {nodeData.birthDateString ?? ""}</p>
-            {nodeData.deathDateString
-              ? `Death: ${nodeData.deathDateString}`
-              : ""}
-            <p>Sources: </p>
-            {nodeData.sources.map((source: string) => {
-              return gedcom.sources ? gedcom.sources[source] : "";
-            })}
-            {/* Image: {nodeData.image} */}
             {nodeData.image && images && (
-              <img src={images[nodeData.image]} width="100" alt="" />
+              <p>
+                <img src={images[nodeData.image]} width="100" alt="" />
+              </p>
             )}
+            {getGenderSign(nodeData.s)}
+            <p>🚼 {nodeData.birthDateString ?? ""}</p>
+            {nodeData.deathDateString ? `✝️ ${nodeData.deathDateString}` : ""}
+            <p>
+              Sources:{" "}
+              {nodeData.sources
+                .map((source: string) => {
+                  return gedcom.sources ? gedcom.sources[source] : "";
+                })
+                .join(", ")}
+            </p>
+            {/* Image: {nodeData.image} */}
             <p>ID: {nodeData.id}</p>
           </div>
         );
