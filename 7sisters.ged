@@ -2,8 +2,8 @@
 1 SOUR Gramps
 2 VERS 5.1.5
 2 NAME Gramps
-1 DATE 27 DEC 2022
-2 TIME 20:01:55
+1 DATE 28 DEC 2022
+2 TIME 10:06:46
 1 SUBM @SUBM@
 1 FILE 7sisters.ged
 1 COPR Copyright (c) 2022 .
@@ -25,9 +25,10 @@
 2 DATE 2007
 1 FAMS @F0000@
 1 SOUR @S0000@
+1 OBJE @O0005@
 1 CHAN
-2 DATE 27 DEC 2022
-3 TIME 18:47:16
+2 DATE 28 DEC 2022
+3 TIME 08:59:45
 0 @I0001@ INDI
 1 NAME Maia /d'Apliése/
 2 GIVN Maia
@@ -44,9 +45,10 @@
 2 PEDI adopted
 1 FAMS @F0002@
 1 SOUR @S0000@
+1 OBJE @O0002@
 1 CHAN
-2 DATE 27 DEC 2022
-3 TIME 18:39:53
+2 DATE 28 DEC 2022
+3 TIME 08:53:51
 0 @I0002@ INDI
 1 NAME Alcyone /d'Apliése/
 2 GIVN Alcyone
@@ -63,10 +65,10 @@
 1 FAMC @F0004@
 2 PEDI birth
 1 SOUR @S0001@
-1 OBJE @O0000@
+1 OBJE @O0004@
 1 CHAN
-2 DATE 27 DEC 2022
-3 TIME 19:01:44
+2 DATE 28 DEC 2022
+3 TIME 08:59:36
 0 @I0003@ INDI
 1 NAME Cristina Izabela /Carvalho/
 2 GIVN Cristina Izabela
@@ -77,8 +79,8 @@
 1 FAMS @F0001@
 1 SOUR @S0000@
 1 CHAN
-2 DATE 27 DEC 2022
-3 TIME 17:50:39
+2 DATE 28 DEC 2022
+3 TIME 09:03:29
 0 @I0004@ INDI
 1 NAME Asterope /d'Apliése/
 2 GIVN Asterope
@@ -93,14 +95,25 @@
 1 FAMC @F0000@
 2 PEDI adopted
 1 SOUR @S0002@
+1 OBJE @O0003@
 1 CHAN
-2 DATE 27 DEC 2022
-3 TIME 18:47:33
+2 DATE 28 DEC 2022
+3 TIME 08:55:21
 0 @I0005@ INDI
 1 NAME Celeano /d'Apliése/
+2 TYPE aka
 2 GIVN Celeano
 2 SURN d'Apliése
-2 NICK CeCe ,Cee,Pearl,Celeano Mercer
+2 NICK CeCe
+1 NAME Celeano /Mercer/
+2 GIVN Celeano
+2 SURN Mercer
+1 NAME  //
+2 TYPE aka
+2 NICK Cee
+1 NAME  //
+2 TYPE aka
+2 NICK The Pearl Sister
 1 SEX F
 1 BIRT
 2 DATE 1980
@@ -111,8 +124,8 @@
 2 PEDI adopted
 1 SOUR @S0003@
 1 CHAN
-2 DATE 27 DEC 2022
-3 TIME 18:47:21
+2 DATE 28 DEC 2022
+3 TIME 09:06:32
 0 @I0006@ INDI
 1 NAME Zed /Eszu/
 2 GIVN Zed
@@ -158,8 +171,8 @@
 1 FAMS @F0004@
 1 SOUR @S0001@
 1 CHAN
-2 DATE 27 DEC 2022
-3 TIME 18:44:23
+2 DATE 28 DEC 2022
+3 TIME 09:02:03
 0 @I0010@ INDI
 1 NAME Martha //
 2 GIVN Martha
@@ -259,10 +272,45 @@
 2 DATE 27 DEC 2022
 3 TIME 18:34:58
 0 @O0000@ OBJE
-1 FILE https://mdvanes.github.io/cytocom/7sisters/alcyone.jpg
+1 FILE /cytocom/7sisters/alcyone.jpg
 2 FORM jpg
 2 TITL alcyone
 1 CHAN
 2 DATE 27 DEC 2022
 3 TIME 19:01:43
+0 @O0001@ OBJE
+1 FILE /cytocom/7sisters/alcyone.jpg
+2 FORM jpg
+2 TITL alcyone
+1 CHAN
+2 DATE 28 DEC 2022
+3 TIME 08:53:29
+0 @O0002@ OBJE
+1 FILE /cytocom/7sisters/maia.jpg
+2 FORM jpg
+2 TITL maia
+1 CHAN
+2 DATE 28 DEC 2022
+3 TIME 08:53:50
+0 @O0003@ OBJE
+1 FILE /cytocom/7sisters/asterope.jpg
+2 FORM jpg
+2 TITL asterope
+1 CHAN
+2 DATE 28 DEC 2022
+3 TIME 08:55:20
+0 @O0004@ OBJE
+1 FILE /cytocom/7sisters/alcyone.jpg
+2 FORM jpg
+2 TITL alcyone
+1 CHAN
+2 DATE 28 DEC 2022
+3 TIME 08:59:35
+0 @O0005@ OBJE
+1 FILE /cytocom/7sisters/pasalt.jpg
+2 FORM jpg
+2 TITL pasalt
+1 CHAN
+2 DATE 28 DEC 2022
+3 TIME 08:59:45
 0 TRLR
