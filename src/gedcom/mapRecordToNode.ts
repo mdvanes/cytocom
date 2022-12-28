@@ -11,11 +11,14 @@ const getRenderedName = (names: MappedNames[]): string => {
   if (names.length === 0) {
     return "";
   }
-  const { nick, given } = names[0];
+  const { nick, given, sur } = names[0];
   if (nick) {
     return nick;
   }
-  return given.split(" ")[0].trim();
+  if (given) {
+    return given.split(" ")[0].trim();
+  }
+  return sur;
 };
 
 const getRenderedNames = (rec: SelectionIndividualRecord): MappedNames[] => {

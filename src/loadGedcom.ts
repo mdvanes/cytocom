@@ -11,22 +11,23 @@ const getParentEdge = (
   parent1: SelectionIndividualRecord,
   parent2: SelectionIndividualRecord,
   areMarried: boolean | null = false
-): EdgeDefinition | { data: object } => {
+): EdgeDefinition | null => {
   const parent1Pointer = parent1.pointer()[0];
   const parent2Pointer = parent2.pointer()[0];
 
-  const parentEdge =
-    parent1Pointer && parent2Pointer
-      ? {
-          data: {
-            id: `${parent1Pointer}-${parent2Pointer}`,
-            source: `${parent1Pointer}`,
-            target: `${parent2Pointer}`,
-            type: "parents",
-            style: areMarried ? "solid" : "dashed",
-          },
-        }
-      : { data: {} };
+  const areBothValid = Boolean(parent1Pointer && parent2Pointer);
+
+  const parentEdge = areBothValid
+    ? {
+        data: {
+          id: `${parent1Pointer}-${parent2Pointer}`,
+          source: `${parent1Pointer}`,
+          target: `${parent2Pointer}`,
+          type: "parents",
+          style: areMarried ? "solid" : "dashed",
+        },
+      }
+    : null;
   return parentEdge;
 };
 
@@ -40,12 +41,13 @@ const mapFamily = (fam: SelectionFamilyRecord): Family => {
     fam.getEventMarriage().valueAsHappened()[0]
   );
 
+  const parentNodes = [
+    ...mapRecordToNode([])(parent1),
+    ...mapRecordToNode([])(parent2),
+  ];
+
   const result = {
-    parents: [
-      ...mapRecordToNode([])(parent1),
-      ...mapRecordToNode([])(parent2),
-      parentEdge,
-    ],
+    parents: parentEdge ? [...parentNodes, parentEdge] : parentNodes,
     children: fam
       .getChild()
       .getIndividualRecord()
