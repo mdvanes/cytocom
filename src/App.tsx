@@ -10,7 +10,10 @@ import "tippy.js/dist/tippy.css";
 import { Actions } from "./actions/Actions";
 import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
-import { loadState, saveState } from "./loadSaveState";
+import { loadState, saveState } from "./util/loadSaveState";
+import { MappedNames } from "./gedcom/mapNames";
+import { NamesList } from "./graph/NamesList";
+import { IndivDetails } from "./graph/IndivDetails";
 // import popper, { getPopperInstance } from "cytoscape-popper";
 // import tippyC from "cytoscape.js-tippy";
 
@@ -173,38 +176,12 @@ const App: FC = () => {
         const target: NodeSingular = evt.target;
         const nodeData = target.data();
 
-        const getGenderSign = (s: string): string => {
-          if (s === "M") {
-            return "♂️";
-          }
-          if (s === "F") {
-            return "♀️";
-          }
-          return "";
-        };
-
         setDetails(
-          <div>
-            <h2>{nodeData.names}</h2>
-            {nodeData.image && images && (
-              <p>
-                <img src={images[nodeData.image]} width="100" alt="" />
-              </p>
-            )}
-            {getGenderSign(nodeData.s)}
-            <p>🚼 {nodeData.birthDateString ?? ""}</p>
-            {nodeData.deathDateString ? `✝️ ${nodeData.deathDateString}` : ""}
-            <p>
-              Sources:{" "}
-              {nodeData.sources
-                .map((source: string) => {
-                  return gedcom.sources ? gedcom.sources[source] : "";
-                })
-                .join(", ")}
-            </p>
-            {/* Image: {nodeData.image} */}
-            <p>ID: {nodeData.id}</p>
-          </div>
+          <IndivDetails
+            nodeData={nodeData}
+            sources={gedcom.sources}
+            images={gedcom.images}
+          />
         );
         // const tippyInstance = makeTippy(target, "foo");
         // tippyInstance.show();

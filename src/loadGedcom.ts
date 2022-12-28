@@ -1,11 +1,7 @@
 import { Family } from "./types";
 import { readGedcom, SelectionFamilyRecord } from "read-gedcom";
-import { mapRecordToNode } from "./mapRecordToNode";
+import { mapRecordToNode } from "./gedcom/mapRecordToNode";
 import { NodeDefinition, EdgeDefinition } from "cytoscape";
-
-// const isDefined = <T>(x: T | undefined | null): x is T => {
-//   return Boolean(x);
-// };
 
 const mapFamily = (fam: SelectionFamilyRecord): Family => {
   const parent1 = fam.getWife().getIndividualRecord();

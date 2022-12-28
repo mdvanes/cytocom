@@ -2,9 +2,27 @@ import { EdgeDefinition, NodeDefinition } from "cytoscape";
 import {
   SelectionIndividualEvent,
   SelectionIndividualRecord,
+  SelectionName,
 } from "read-gedcom";
+import { mapNames } from "./mapNames";
 
+// NOTE: used for Node label
 const getRenderedName = (rec: SelectionIndividualRecord): string => {
+  console.log(rec.getName().toString());
+  // console.log(
+  //   rec.getName().value(),
+  //   rec.getName().valueAsParts(),
+  //   rec.getName().getSurname().value(),
+  //   rec.getName().getNickname(),
+  //   rec.getName().getType().value()
+  // );
+
+  const allNames = rec.getName().arraySelect();
+  // console.log(x);
+  // x[0].
+  allNames.map((n, i) => console.log(i, JSON.stringify(mapNames(n), null, 2)));
+  // testFn(x[0]);
+
   const names =
     rec.getName().getNickname().value()[0] ??
     rec.getName().getGivenName().value()[0] ??
@@ -17,13 +35,24 @@ const getRenderedName = (rec: SelectionIndividualRecord): string => {
   return names;
 };
 
-const getRenderedNames = (rec: SelectionIndividualRecord): string => {
-  const nick = rec.getName().getNickname().value()[0];
-  const nickFormatted = nick ? `"${nick}"` : "";
-  // return `${rec.getName().getGivenName().value()[0] ?? ""} ${nickFormatted} ${
-  //   rec.getName().value()[0]
-  // }`.trim();
-  return `${nickFormatted} ${rec.getName().value()[0]}`.trim();
+const getRenderedNames = (rec: SelectionIndividualRecord): object[] => {
+  const allNames = rec.getName().arraySelect();
+  // allNames.map((n, i) => console.log(i, JSON.stringify(mapNames(n), null, 2)));
+  return allNames.map(mapNames);
+  // const allMappedNames = allNames.map(mapNames).map((n) => (
+  //   <li>
+  //     <strong>{n.sur}</strong>
+  //   </li>
+  // ));
+  // // ¹ for birth name
+
+  // // const nick = rec.getName().getNickname().value()[0];
+  // // const nickFormatted = nick ? `"${nick}"` : "";
+  // // // return `${rec.getName().getGivenName().value()[0] ?? ""} ${nickFormatted} ${
+  // // //   rec.getName().value()[0]
+  // // // }`.trim();
+  // // return `${nickFormatted} ${rec.getName().value()[0]}`.trim();
+  // return <ul>{allMappedNames}</ul>;
 };
 
 const getColor = (s?: string): string | undefined => {
