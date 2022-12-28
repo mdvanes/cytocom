@@ -3,7 +3,7 @@
 2 VERS 5.1.5
 2 NAME Gramps
 1 DATE 28 DEC 2022
-2 TIME 10:06:46
+2 TIME 12:20:13
 1 SUBM @SUBM@
 1 FILE 7sisters.ged
 1 COPR Copyright (c) 2022 .
@@ -16,8 +16,18 @@
 1 NAME
 0 @I0000@ INDI
 1 NAME  /d'Apliése/
+2 TYPE aka
 2 SURN d'Apliése
-2 NICK Pa Salt , Atlas P, Bo, Mr Tanit
+2 NICK Pa Salt
+1 NAME  //
+2 TYPE aka
+2 NICK Bo
+1 NAME  //
+2 TYPE aka
+2 NICK Mr Tanit
+1 NAME  //
+2 TYPE aka
+2 NICK Atlas P
 1 SEX M
 1 BIRT
 2 DATE BET 1917 AND 1921
@@ -28,7 +38,7 @@
 1 OBJE @O0005@
 1 CHAN
 2 DATE 28 DEC 2022
-3 TIME 08:59:45
+3 TIME 11:15:42
 0 @I0001@ INDI
 1 NAME Maia /d'Apliése/
 2 GIVN Maia
@@ -51,9 +61,16 @@
 3 TIME 08:53:51
 0 @I0002@ INDI
 1 NAME Alcyone /d'Apliése/
+2 TYPE aka
 2 GIVN Alcyone
 2 SURN d'Apliése
-2 NICK Ally , Storm, Felicia
+2 NICK Ally
+1 NAME Felicia /Halvorsen/
+2 GIVN Felicia
+2 SURN Halvorsen
+1 NAME  //
+2 TYPE aka
+2 NICK The Storm Sister
 1 SEX F
 1 BIRT
 2 DATE 1977
@@ -68,7 +85,7 @@
 1 OBJE @O0004@
 1 CHAN
 2 DATE 28 DEC 2022
-3 TIME 08:59:36
+3 TIME 11:18:42
 0 @I0003@ INDI
 1 NAME Cristina Izabela /Carvalho/
 2 GIVN Cristina Izabela
@@ -83,9 +100,19 @@
 3 TIME 09:03:29
 0 @I0004@ INDI
 1 NAME Asterope /d'Apliése/
+2 TYPE aka
 2 GIVN Asterope
 2 SURN d'Apliése
-2 NICK Star ,Sia,Shadow,Lucy Charlotte
+2 NICK Star
+1 NAME Lucy Charlotte /Brown/
+2 GIVN Lucy Charlotte
+2 SURN Brown
+1 NAME  //
+2 TYPE aka
+2 NICK Sia
+1 NAME  //
+2 TYPE aka
+2 NICK The Shadow Sister
 1 SEX F
 1 BIRT
 2 DATE 1980
@@ -94,11 +121,13 @@
 3 ADOP BOTH
 1 FAMC @F0000@
 2 PEDI adopted
+1 FAMC @F0005@
+2 PEDI birth
 1 SOUR @S0002@
 1 OBJE @O0003@
 1 CHAN
 2 DATE 28 DEC 2022
-3 TIME 08:55:21
+3 TIME 11:13:52
 0 @I0005@ INDI
 1 NAME Celeano /d'Apliése/
 2 TYPE aka
@@ -153,14 +182,16 @@
 1 NAME Kreeg /Eszu/
 2 GIVN Kreeg
 2 SURN Eszu
+1 NAME  //
+2 TYPE aka
 2 NICK Greek Zeus
 1 SEX M
 1 DEAT
 2 DATE 2007
 1 FAMS @F0003@
 1 CHAN
-2 DATE 27 DEC 2022
-3 TIME 18:41:05
+2 DATE 28 DEC 2022
+3 TIME 11:19:36
 0 @I0009@ INDI
 1 NAME Felix Mendelssohn /Halvorsen/
 2 GIVN Felix Mendelssohn
@@ -195,6 +226,23 @@
 1 CHAN
 2 DATE 27 DEC 2022
 3 TIME 18:44:53
+0 @I0012@ INDI
+1 NAME Sylvia /Gray/
+2 TYPE aka
+2 GIVN Sylvia
+2 SURN Gray
+2 NPFX Professor
+1 NAME Petula /Brown/
+2 GIVN Petula
+2 SURN Brown
+1 SEX F
+1 BIRT
+2 DATE 1962
+1 FAMS @F0005@
+1 SOUR @S0002@
+1 CHAN
+2 DATE 28 DEC 2022
+3 TIME 11:13:52
 0 @F0000@ FAM
 1 HUSB @I0000@
 1 CHIL @I0001@
@@ -231,6 +279,12 @@
 1 CHAN
 2 DATE 27 DEC 2022
 3 TIME 18:44:53
+0 @F0005@ FAM
+1 WIFE @I0012@
+1 CHIL @I0004@
+1 CHAN
+2 DATE 28 DEC 2022
+3 TIME 11:13:52
 0 @S0000@ SOUR
 1 TITL Book1
 1 CHAN
@@ -271,20 +325,6 @@
 1 CHAN
 2 DATE 27 DEC 2022
 3 TIME 18:34:58
-0 @O0000@ OBJE
-1 FILE /cytocom/7sisters/alcyone.jpg
-2 FORM jpg
-2 TITL alcyone
-1 CHAN
-2 DATE 27 DEC 2022
-3 TIME 19:01:43
-0 @O0001@ OBJE
-1 FILE /cytocom/7sisters/alcyone.jpg
-2 FORM jpg
-2 TITL alcyone
-1 CHAN
-2 DATE 28 DEC 2022
-3 TIME 08:53:29
 0 @O0002@ OBJE
 1 FILE /cytocom/7sisters/maia.jpg
 2 FORM jpg
