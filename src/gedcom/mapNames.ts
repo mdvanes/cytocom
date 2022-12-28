@@ -12,6 +12,7 @@ export const mapNames = (selectionName: SelectionName): MappedNames => {
   const type = selectionName.getType().valueNonNull();
   return {
     type: type.length > 0 ? type[0] : "birth",
+    // TODO allow title, e.g. leader of the x tribe - title:
     sur: selectionName.getSurname().valueNonNull().join(", "),
     givenParts: selectionName.getGivenName().valueNonNull(),
     given: selectionName.getGivenName().valueNonNull().join(", "),

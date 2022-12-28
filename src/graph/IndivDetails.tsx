@@ -47,7 +47,8 @@ export const IndivDetails: FC<{
           })
           .join(", ")}
       </p>
-      <p>ID: {nodeData.id}</p>
+      <p className="small">ID: {nodeData.id}</p>
+      <p className="small">¹ birth name</p>
     </div>
   );
 };

@@ -2,40 +2,49 @@ import { EdgeDefinition, NodeDefinition } from "cytoscape";
 import {
   SelectionIndividualEvent,
   SelectionIndividualRecord,
-  SelectionName,
 } from "read-gedcom";
-import { mapNames } from "./mapNames";
+import { mapNames, MappedNames } from "./mapNames";
 
 // NOTE: used for Node label
-const getRenderedName = (rec: SelectionIndividualRecord): string => {
-  console.log(rec.getName().toString());
-  // console.log(
-  //   rec.getName().value(),
-  //   rec.getName().valueAsParts(),
-  //   rec.getName().getSurname().value(),
-  //   rec.getName().getNickname(),
-  //   rec.getName().getType().value()
-  // );
-
-  const allNames = rec.getName().arraySelect();
-  // console.log(x);
-  // x[0].
-  allNames.map((n, i) => console.log(i, JSON.stringify(mapNames(n), null, 2)));
-  // testFn(x[0]);
-
-  const names =
-    rec.getName().getNickname().value()[0] ??
-    rec.getName().getGivenName().value()[0] ??
-    rec.getName().value()[0] ??
-    "";
-  // TODO this is making the invalid assumption that a single name can't contain a space, e.g. "Mette Marit" or "Pa Salt" are counter examples.
-  if (names.indexOf(" ") > -1) {
-    return names.split(" ")[0];
+const getRenderedName = (names: MappedNames[]): string => {
+  if (names.length === 0) {
+    return "";
   }
-  return names;
+  const { nick, given } = names[0];
+  if (nick) {
+    return nick;
+  }
+  return given.split(" ")[0].trim();
 };
+// const getRenderedName = (rec: SelectionIndividualRecord): string => {
+//   console.log(rec.getName().toString());
+//   // console.log(
+//   //   rec.getName().value(),
+//   //   rec.getName().valueAsParts(),
+//   //   rec.getName().getSurname().value(),
+//   //   rec.getName().getNickname(),
+//   //   rec.getName().getType().value()
+//   // );
 
-const getRenderedNames = (rec: SelectionIndividualRecord): object[] => {
+//   const allNames = rec.getName().arraySelect();
+//   // console.log(x);
+//   // x[0].
+//   allNames.map((n, i) => console.log(i, JSON.stringify(mapNames(n), null, 2)));
+//   // testFn(x[0]);
+
+//   const names =
+//     rec.getName().getNickname().value()[0] ??
+//     rec.getName().getGivenName().value()[0] ??
+//     rec.getName().value()[0] ??
+//     "";
+//   // TODO this is making the invalid assumption that a single name can't contain a space, e.g. "Mette Marit" or "Pa Salt" are counter examples.
+//   if (names.indexOf(" ") > -1) {
+//     return names.split(" ")[0];
+//   }
+//   return names;
+// };
+
+const getRenderedNames = (rec: SelectionIndividualRecord): MappedNames[] => {
   const allNames = rec.getName().arraySelect();
   // allNames.map((n, i) => console.log(i, JSON.stringify(mapNames(n), null, 2)));
   return allNames.map(mapNames);
@@ -79,11 +88,13 @@ export const mapRecordToNode =
     const s = `${record.getSex().value()[0]}`;
     const pointer = `${record.pointer()[0]}`;
 
+    const mappedNames = getRenderedNames(record);
+
     const node = {
       data: {
         id: pointer,
-        name: getRenderedName(record),
-        names: getRenderedNames(record),
+        name: getRenderedName(mappedNames),
+        names: mappedNames,
         s,
         color: getColor(s),
         birthDateString: record.getEventBirth().getDate().value()[0],

@@ -3,9 +3,11 @@ import { MappedNames } from "../gedcom/mapNames";
 
 const NameListItem: FC<{ name: MappedNames }> = ({ name }) => {
   const nick = name.nick ? `"${name.nick}"` : "";
+  const type = name.type === "birth" ? "¹" : "";
   return (
     <>
       {name.given} {nick} <em>{name.sur}</em>
+      {type}
     </>
   );
 };
@@ -24,7 +26,7 @@ export const NamesList: FC<{ names: MappedNames[] }> = ({ names }) => {
     names.length > 1 ? (
       <ul>
         {names.slice(1).map((n) => (
-          <li>
+          <li key={n.given}>
             <NameListItem name={n} />
           </li>
         ))}

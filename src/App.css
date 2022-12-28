@@ -15,6 +15,7 @@ section {
   padding: 20px;
   width: 200px;
   /* word-break: break-all; */
+  overflow: hidden;
 }
 
 .App #cy {
@@ -40,4 +41,13 @@ section {
   border: 0;
   font-size: 18px;
   padding: 5px 30px;
+}
+
+.App aside ul {
+  padding-left: 8px;
+}
+
+.App aside .small {
+  font-size: 80%;
+  margin: 0;
 }
