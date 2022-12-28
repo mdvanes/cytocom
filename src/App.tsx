@@ -10,6 +10,7 @@ import "tippy.js/dist/tippy.css";
 import { Actions } from "./actions/Actions";
 import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
+import { loadState, saveState } from "./loadSaveState";
 // import popper, { getPopperInstance } from "cytoscape-popper";
 // import tippyC from "cytoscape.js-tippy";
 
@@ -53,16 +54,19 @@ cytoscape.use(dagre);
 // type PopperInstance = ReturnType<getPopperInstance<unknown>>;
 
 const App: FC = () => {
+  const loadedState = loadState();
   const [cy, setCy] = useState<cytoscape.Core>();
   const [layout, setLayout] = useState<LayoutOptions>(dagreLayout);
   const { initMinMax, rangeSlider } = useRange(cy);
-  const [gedcomPath, setGedcomPath] = useState(
-    "https://mon.arbre.app/gedcoms/royal92.ged"
-  );
+  const [gedcomPath, setGedcomPath] = useState(loadedState.gedcomPath);
   const [sources, setSources] = useState<Record<string, string>>();
   const [images, setImages] = useState<Record<string, string>>();
   const [details, setDetails] = useState<any>();
   const [showDetails, setShowDetails] = useState(true);
+
+  useEffect(() => {
+    saveState({ gedcomPath });
+  }, [gedcomPath]);
 
   useEffect(() => {
     const run = async () => {
