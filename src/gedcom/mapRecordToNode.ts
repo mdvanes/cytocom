@@ -48,7 +48,6 @@ export const mapRecordToNode =
     const pointer = `${record.pointer()[0]}`;
 
     const adoptiveParentIds = getAdoptiveParentIds(record);
-
     const mappedNames = getRenderedNames(record);
 
     const node = {

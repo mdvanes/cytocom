@@ -45,9 +45,21 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
       "line-style": (n) => {
         return n.data("style") || "solid";
       },
-      "line-color": "#afa100",
+      "line-color": (n) => {
+        const type = n.data("type");
+        if (type && type === "parents") {
+          return "purple";
+        }
+        return "#afa100";
+      },
       "target-arrow-color": "#afa100",
-      "target-arrow-shape": "triangle",
+      "target-arrow-shape": (n) => {
+        const type = n.data("type");
+        if (type && type === "parents") {
+          return "none";
+        }
+        return "triangle";
+      },
       "curve-style": "bezier",
     },
   },

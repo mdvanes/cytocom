@@ -11,7 +11,12 @@ section {
   display: flex;
 }
 
+aside {
+  display: none;
+}
+
 .show-details aside {
+  display: block;
   padding: 20px;
   width: 200px;
   /* word-break: break-all; */
