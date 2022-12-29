@@ -3,6 +3,7 @@ import {
   SelectionIndividualEvent,
   SelectionIndividualRecord,
 } from "read-gedcom";
+import { isDefined } from "../util/isDefined";
 import { getAdoptiveParentIds } from "./getAdoptiveParentIds";
 import { mapNames, MappedNames } from "./mapNames";
 
@@ -66,21 +67,29 @@ export const mapRecordToNode =
         deathYear: getYear(record.getEventDeath()),
         sources: record.getSourceCitation().value(),
         image: record.getMultimedia().value()[0],
+        // TODO url: record.
       },
     };
 
-    const edgesToParents = parents.map((parent) => {
-      const parentPointer = `${parent.pointer()[0]}`;
-      return {
-        data: {
-          id: `${parentPointer}-${pointer}`,
-          source: `${parentPointer}`,
-          target: `${pointer}`,
-          style:
-            adoptiveParentIds.indexOf(parentPointer) > -1 ? "dashed" : "solid",
-        },
-      };
-    });
+    const edgesToParents = parents
+      .map((parent) => {
+        const parentPointer = parent.pointer()[0];
+        if (!parentPointer) {
+          return undefined;
+        }
+        return {
+          data: {
+            id: `${parentPointer}-${pointer}`,
+            source: `${parentPointer}`,
+            target: `${pointer}`,
+            style:
+              adoptiveParentIds.indexOf(parentPointer) > -1
+                ? "dashed"
+                : "solid",
+          },
+        };
+      })
+      .filter(isDefined);
 
     return [node, ...edgesToParents];
   };
