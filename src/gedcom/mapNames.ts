@@ -7,6 +7,7 @@ export interface MappedNames {
   given: string;
   nick: string;
   prefix: string;
+  value: string;
 }
 
 export const mapNames = (selectionName: SelectionName): MappedNames => {
@@ -20,5 +21,6 @@ export const mapNames = (selectionName: SelectionName): MappedNames => {
     // nickParts: nobj.getNickname().value(),
     nick: selectionName.getNickname().valueNonNull().join(", "),
     // NOTE: call name is not in GEDCOM
+    value: selectionName.value().join(" "),
   };
 };

@@ -22,7 +22,7 @@ export const SelectGedcom: FC<Props> = ({ setGedcomPath }) => {
       >
         <option value="/cytocom/7sisters.ged">Seven Sisters</option>
         <option value="https://mon.arbre.app/gedcoms/royal92.ged">
-          Royal Family
+          Windsor
         </option>
         <option value="/cytocom/example.ged">Example</option>
       </select>
