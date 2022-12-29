@@ -23,6 +23,7 @@ export const SelectLayout: FC<Props> = ({ cy, setLayout }) => {
   return (
     <div>
       <select
+        className="secondary"
         name="gedcom"
         id="gedcom"
         onChange={(evt) => {

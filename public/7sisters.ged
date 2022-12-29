@@ -467,12 +467,10 @@
 1 SEX M
 1 FAMS @F0015@
 1 SOUR @S0000@
-1 OBJE
-2 FORM URL
-2 FILE https://en.wikipedia.org/wiki/Heitor_da_Silva_Costa
+1 WWW https://en.wikipedia.org/wiki/Heitor_da_Silva_Costa
 1 CHAN
-2 DATE 28 DEC 2022
-3 TIME 18:56:48
+2 DATE 29 DEC 2022
+3 TIME 10:35:09
 0 @I0031@ INDI
 1 NAME Maria Elisa /da Silva Costa/
 2 GIVN Maria Elisa

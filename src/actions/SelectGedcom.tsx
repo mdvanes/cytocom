@@ -18,6 +18,7 @@ export const SelectGedcom: FC<Props> = ({ setGedcomPath }) => {
           }
         }}
         value={loadedState.gedcomPath}
+        className="primary"
       >
         <option value="/cytocom/7sisters.ged">Seven Sisters</option>
         <option value="https://mon.arbre.app/gedcoms/royal92.ged">

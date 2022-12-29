@@ -49,6 +49,12 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
       },
     },
   },
+  {
+    selector: "node[url]",
+    style: {
+      "border-style": "double",
+    },
+  },
 
   {
     selector: "edge",
@@ -73,6 +79,18 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
         return "triangle";
       },
       "curve-style": "bezier",
+    },
+  },
+
+  {
+    selector: "edge[label]",
+    style: {
+      color: "#827914",
+      // color: "rgba(175,161,0,0.1)",
+      label: "data(label)",
+      // opacity: 0.5,
+      // @ts-expect-error
+      "edge-text-rotation": "autorotate",
     },
   },
 

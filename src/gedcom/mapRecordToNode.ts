@@ -86,15 +86,14 @@ export const mapRecordToNode =
         if (!parentPointer) {
           return undefined;
         }
+        const isAdopted = adoptiveParentIds.indexOf(parentPointer) > -1;
         return {
           data: {
             id: `${parentPointer}-${pointer}`,
             source: `${parentPointer}`,
             target: `${pointer}`,
-            style:
-              adoptiveParentIds.indexOf(parentPointer) > -1
-                ? "dashed"
-                : "solid",
+            label: isAdopted ? "adopted" : undefined,
+            style: isAdopted ? "dashed" : "solid",
           },
         };
       })

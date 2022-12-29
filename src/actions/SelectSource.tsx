@@ -38,7 +38,12 @@ export const SelectSource: FC<Props> = ({ cy, sources }) => {
 
   return (
     <div>
-      <select name="sources" id="sources" onChange={handleSourceChange}>
+      <select
+        name="sources"
+        id="sources"
+        onChange={handleSourceChange}
+        className="alert"
+      >
         <option value="">none</option>
         {sources &&
           Object.entries(sources).map(([id, name]) => (
