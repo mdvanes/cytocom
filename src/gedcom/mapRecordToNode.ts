@@ -3,6 +3,7 @@ import {
   SelectionIndividualEvent,
   SelectionIndividualRecord,
 } from "read-gedcom";
+import { ADOPTED, ASSOCIATION } from "../constants";
 import { isDefined } from "../util/isDefined";
 import { getAdoptiveParentIds } from "./getAdoptiveParentIds";
 import { mapNames, MappedNames } from "./mapNames";
@@ -92,7 +93,7 @@ export const mapRecordToNode =
             id: `${parentPointer}-${pointer}`,
             source: `${parentPointer}`,
             target: `${pointer}`,
-            label: isAdopted ? "adopted" : undefined,
+            label: isAdopted ? ADOPTED : undefined,
             style: isAdopted ? "dashed" : "solid",
           },
         };
@@ -110,7 +111,7 @@ export const mapRecordToNode =
             source: `${assoPointer}`,
             target: `${pointer}`,
             label: `${asso.getRelation().valueNonNull()[0]}`.toLowerCase(),
-            type: "association",
+            type: ASSOCIATION,
           },
         };
       });

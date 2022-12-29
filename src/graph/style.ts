@@ -1,4 +1,5 @@
 import { CytoscapeOptions, EdgeSingular, NodeSingular } from "cytoscape";
+import { ASSOCIATION, PARENTS } from "../constants";
 
 interface Args {
   images: Record<string, string>;
@@ -68,10 +69,10 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
       },
       "line-color": (n) => {
         const type = n.data("type");
-        if (type && type === "parents") {
+        if (type && type === PARENTS) {
           return "#bea5ff";
         }
-        if (type && type === "association") {
+        if (type && type === ASSOCIATION) {
           return "white";
         }
         return "#afa100";
@@ -79,7 +80,7 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
       "target-arrow-color": "#afa100",
       "target-arrow-shape": (n) => {
         const type = n.data("type");
-        if (type && (type === "parents" || type === "association")) {
+        if (type && (type === PARENTS || type === ASSOCIATION)) {
           return "none";
         }
         return "triangle";
@@ -92,10 +93,10 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
     style: {
       color: (n: EdgeSingular) => {
         const type = n.data("type");
-        if (type && type === "parents") {
+        if (type && type === PARENTS) {
           return "#705e9d";
         }
-        if (type && type === "association") {
+        if (type && type === ASSOCIATION) {
           return "#bababa";
         }
         return "#827914";

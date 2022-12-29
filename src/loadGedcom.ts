@@ -6,6 +6,7 @@ import {
 } from "read-gedcom";
 import { mapRecordToNode } from "./gedcom/mapRecordToNode";
 import { NodeDefinition, EdgeDefinition } from "cytoscape";
+import { PARENTS, UNMARRIED } from "./constants";
 
 const getParentEdge = (
   parent1: SelectionIndividualRecord,
@@ -23,9 +24,9 @@ const getParentEdge = (
           id: `${parent1Pointer}-${parent2Pointer}`,
           source: `${parent1Pointer}`,
           target: `${parent2Pointer}`,
-          type: "parents",
+          type: PARENTS,
           style: areMarried ? "solid" : "dashed",
-          label: areMarried ? undefined : "unmarried",
+          label: areMarried ? undefined : UNMARRIED,
         },
       }
     : null;
