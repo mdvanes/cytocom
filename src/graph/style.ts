@@ -1,4 +1,4 @@
-import { CytoscapeOptions, NodeSingular } from "cytoscape";
+import { CytoscapeOptions, EdgeSingular, NodeSingular } from "cytoscape";
 
 interface Args {
   images: Record<string, string>;
@@ -25,14 +25,21 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
       //   n.data("birthYear") < 1821 ? "hidden" : "visible",
       // "background-color": "data(color)",
       // label: "data(name)",
+      label: (n: NodeSingular) => {
+        const name = n.data("name") || "";
+        const deathYear = n.data("deathYear") ? " †" : "";
+        const url = n.data("url") ? " 🔗" : "";
+        return `${name}${deathYear}${url}`;
+      },
+      // "text-wrap": "wrap",
     },
   },
-  {
-    selector: "node[name]",
-    style: {
-      label: "data(name)",
-    },
-  },
+  // {
+  //   selector: "node[name]",
+  //   style: {
+  //     label: "data(name)",
+  //   },
+  // },
   {
     selector: "node[color]",
     style: {
@@ -49,16 +56,12 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
       },
     },
   },
-  {
-    selector: "node[url]",
-    style: {
-      "border-style": "double",
-    },
-  },
 
   {
     selector: "edge",
     style: {
+      // "curve-style": "taxi",
+      "curve-style": "bezier",
       width: 0.5,
       "line-style": (n) => {
         return n.data("style") || "solid";
@@ -78,17 +81,20 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
         }
         return "triangle";
       },
-      "curve-style": "bezier",
     },
   },
 
   {
     selector: "edge[label]",
     style: {
-      color: "#827914",
-      // color: "rgba(175,161,0,0.1)",
+      color: (n: EdgeSingular) => {
+        const type = n.data("type");
+        if (type && type === "parents") {
+          return "#705e9d";
+        }
+        return "#827914";
+      },
       label: "data(label)",
-      // opacity: 0.5,
       // @ts-expect-error
       "edge-text-rotation": "autorotate",
     },

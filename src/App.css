@@ -61,5 +61,8 @@ aside {
 }
 
 .App aside a {
+  display: block;
   color: #8cb4ff;
+  word-break: break-all;
+  margin-bottom: 10px;
 }

@@ -25,6 +25,7 @@ const getParentEdge = (
           target: `${parent2Pointer}`,
           type: "parents",
           style: areMarried ? "solid" : "dashed",
+          label: areMarried ? undefined : "unmarried",
         },
       }
     : null;

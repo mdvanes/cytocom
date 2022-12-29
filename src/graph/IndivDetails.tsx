@@ -33,7 +33,7 @@ export const IndivDetails: FC<{
       <NamesList names={nodeData.names} />
       {nodeData.image && images && (
         <p>
-          <img src={images[nodeData.image]} width="100" alt="" />
+          <img src={images[nodeData.image]} width="195" alt="" />
         </p>
       )}
       {getGenderSign(nodeData.s)}
