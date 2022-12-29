@@ -71,12 +71,15 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
         if (type && type === "parents") {
           return "#bea5ff";
         }
+        if (type && type === "association") {
+          return "white";
+        }
         return "#afa100";
       },
       "target-arrow-color": "#afa100",
       "target-arrow-shape": (n) => {
         const type = n.data("type");
-        if (type && type === "parents") {
+        if (type && (type === "parents" || type === "association")) {
           return "none";
         }
         return "triangle";
@@ -91,6 +94,9 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
         const type = n.data("type");
         if (type && type === "parents") {
           return "#705e9d";
+        }
+        if (type && type === "association") {
+          return "#bababa";
         }
         return "#827914";
       },

@@ -99,5 +99,21 @@ export const mapRecordToNode =
       })
       .filter(isDefined);
 
-    return [node, ...edgesToParents];
+    const edgesToAssociations = record
+      .getAssociation()
+      .arraySelect()
+      .map((asso) => {
+        const assoPointer = asso.valueNonNull()[0];
+        return {
+          data: {
+            id: `${assoPointer}-${pointer}`,
+            source: `${assoPointer}`,
+            target: `${pointer}`,
+            label: `${asso.getRelation().valueNonNull()[0]}`.toLowerCase(),
+            type: "association",
+          },
+        };
+      });
+
+    return [node, ...edgesToParents, ...edgesToAssociations];
   };
