@@ -59,7 +59,11 @@ export const mapRecordToNode =
   (parents: SelectionIndividualRecord[]) =>
   (record: SelectionIndividualRecord): (NodeDefinition | EdgeDefinition)[] => {
     const s = `${record.getSex().value()[0]}`;
-    const pointer = `${record.pointer()[0]}`;
+    const pointer = record.pointer()[0];
+
+    if (!pointer) {
+      return [];
+    }
 
     const adoptiveParentIds = getAdoptiveParentIds(record);
     const mappedNames = getRenderedNames(record);

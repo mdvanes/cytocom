@@ -10,3 +10,5 @@ Make a graph visualisation with [Cytoscape.JS](https://js.cytoscape.org/) and [r
 - To show an URL, add a field under "Internet" in GRAMPS of type "Web Home"
 - color scheme: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
 - generated photos: https://generated.photos/faces/
+
+## TODO
