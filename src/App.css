@@ -60,3 +60,7 @@ aside {
 .App aside .dim {
   opacity: 0.5;
 }
+
+.App aside a {
+  color: #8cb4ff;
+}

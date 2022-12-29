@@ -10,6 +10,7 @@ interface NodeData {
   birthDateString: string;
   deathDateString: string;
   id: string;
+  url: string | undefined;
 }
 
 const getGenderSign = (s: string): string => {
@@ -29,7 +30,6 @@ export const IndivDetails: FC<{
 }> = ({ nodeData, images, sources }) => {
   return (
     <div>
-      {/* <h2>{nodeData.names}</h2> */}
       <NamesList names={nodeData.names} />
       {nodeData.image && images && (
         <p>
@@ -47,6 +47,7 @@ export const IndivDetails: FC<{
           })
           .join(", ")}
       </p>
+      {nodeData.url && <a href={nodeData.url}>{nodeData.url}</a>}
       <p className="small">ID: {nodeData.id}</p>
       <p className="small">¹ birth name</p>
     </div>

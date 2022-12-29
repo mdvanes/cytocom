@@ -45,6 +45,15 @@ const getYear = (familyEvent: SelectionIndividualEvent): number => {
   return 0;
 };
 
+// Return GRAMPS style URL
+const getUrl = (rec: SelectionIndividualRecord): string | undefined => {
+  const wwwList = rec.get("WWW").valueNonNull();
+  const www = wwwList.length > 0 ? wwwList[0] : undefined;
+  const objectFileList = rec.get("OBJE").get("FILE").valueNonNull();
+  const objectFile = objectFileList.length > 0 ? objectFileList[0] : undefined;
+  return www || objectFile;
+};
+
 export const mapRecordToNode =
   (parents: SelectionIndividualRecord[]) =>
   (record: SelectionIndividualRecord): (NodeDefinition | EdgeDefinition)[] => {
@@ -67,7 +76,7 @@ export const mapRecordToNode =
         deathYear: getYear(record.getEventDeath()),
         sources: record.getSourceCitation().value(),
         image: record.getMultimedia().value()[0],
-        // TODO url: record.
+        url: getUrl(record),
       },
     };
 
