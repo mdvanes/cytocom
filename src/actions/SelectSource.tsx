@@ -44,7 +44,7 @@ export const SelectSource: FC<Props> = ({ cy, sources }) => {
         onChange={handleSourceChange}
         className="alert"
       >
-        <option value="">none</option>
+        <option value="">All sources</option>
         {sources &&
           Object.entries(sources).map(([id, name]) => (
             <option key={id} value={id}>

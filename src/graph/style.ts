@@ -13,10 +13,10 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
       color: "white",
       "border-color": (n: NodeSingular) => {
         // return n.data("deathYear") ? "#757575" : "transparent";
-        return n.data("deathYear") ? "#fff" : "transparent";
+        return n.data("deathDateString") ? "#fff" : "transparent";
       },
       "border-width": (n: NodeSingular) => {
-        return n.data("deathYear") ? "2" : "0";
+        return n.data("deathDateString") ? "2" : "0";
       },
       // border: "1px solid red",
       // "background-color": "#4e4e4e",
@@ -28,7 +28,7 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
       // label: "data(name)",
       label: (n: NodeSingular) => {
         const name = n.data("name") || "";
-        const deathYear = n.data("deathYear") ? " †" : "";
+        const deathYear = n.data("deathDateString") ? " †" : "";
         const url = n.data("url") ? " 🔗" : "";
         return `${name}${deathYear}${url}`;
       },

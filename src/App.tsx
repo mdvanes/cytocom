@@ -1,4 +1,9 @@
-import cytoscape, { LayoutOptions, NodeSingular } from "cytoscape";
+import cytoscape, {
+  EdgeDefinition,
+  LayoutOptions,
+  NodeDefinition,
+  NodeSingular,
+} from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
 import "./App.css";
@@ -13,7 +18,7 @@ import { useRange } from "./useRange";
 import { loadState, saveState } from "./util/loadSaveState";
 import { IndivDetails } from "./graph/IndivDetails";
 import { getStyle } from "./graph/style";
-import { MAX_FAMILIES } from "./constants";
+import { logLoaded } from "./util/readFile";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
@@ -37,11 +42,7 @@ const App: FC = () => {
     const run = async () => {
       const { elements, ...gedcom } = await loadGedcom(gedcomPath);
 
-      const nrOfEdges = elements.filter((elem) => "source" in elem.data).length;
-      const nrOfNodes = elements.length - nrOfEdges;
-      console.log(
-        `Loaded ${elements.length} elements (${nrOfNodes} nodes and ${nrOfEdges} edges) from ${gedcomPath} | Capped at ${MAX_FAMILIES} families`
-      );
+      logLoaded(gedcomPath, elements);
 
       setSources(gedcom.sources);
       // setImages(gedcom.images);

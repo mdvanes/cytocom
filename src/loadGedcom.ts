@@ -7,6 +7,7 @@ import {
 import { mapRecordToNode } from "./gedcom/mapRecordToNode";
 import { NodeDefinition, EdgeDefinition } from "cytoscape";
 import { MAX_FAMILIES, PARENTS, UNMARRIED } from "./constants";
+import { isFileContent, stringToArrayBuffer } from "./util/readFile";
 
 const getParentEdge = (
   parent1: SelectionIndividualRecord,
@@ -68,9 +69,11 @@ export const loadGedcom = async (
   sources: Record<string, string>;
   images: Record<string, string>;
 }> => {
-  const gedcom = await fetch(path)
-    .then((r) => r.arrayBuffer())
-    .then(readGedcom);
+  const gedcom = isFileContent(path)
+    ? readGedcom(stringToArrayBuffer(path))
+    : await fetch(path)
+        .then((r) => r.arrayBuffer())
+        .then(readGedcom);
 
   const families = gedcom.getFamilyRecord();
 
