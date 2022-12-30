@@ -13,47 +13,10 @@ import { useRange } from "./useRange";
 import { loadState, saveState } from "./util/loadSaveState";
 import { IndivDetails } from "./graph/IndivDetails";
 import { getStyle } from "./graph/style";
-// import popper, { getPopperInstance } from "cytoscape-popper";
-// import tippyC from "cytoscape.js-tippy";
+import { MAX_FAMILIES } from "./constants";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
-// cytoscape.use(popper);
-// cytoscape.use(tippy);
-
-// var makeTippy = function (ele: any, text: string) {
-//   var ref = ele.popperRef();
-
-//   // Since tippy constructor requires DOM element/elements, create a placeholder
-//   var dummyDomEle = document.createElement("div");
-
-//   var tip = tippy(dummyDomEle, {
-//     getReferenceClientRect: ref.getBoundingClientRect,
-//     trigger: "manual", // mandatory
-//     // dom element inside the tippy:
-//     content: function () {
-//       // function can be better for performance
-//       var div = document.createElement("div");
-
-//       div.innerHTML = text;
-
-//       return div;
-//     },
-//     // your own preferences:
-//     arrow: true,
-//     placement: "bottom",
-//     hideOnClick: false,
-//     sticky: "reference",
-
-//     // if interactive:
-//     interactive: true,
-//     appendTo: document.body, // or append dummyDomEle to document.body
-//   });
-
-//   return tip;
-// };
-
-// type PopperInstance = ReturnType<getPopperInstance<unknown>>;
 
 const App: FC = () => {
   const loadedState = loadState();
@@ -74,6 +37,12 @@ const App: FC = () => {
     const run = async () => {
       const { elements, ...gedcom } = await loadGedcom(gedcomPath);
 
+      const nrOfEdges = elements.filter((elem) => "source" in elem.data).length;
+      const nrOfNodes = elements.length - nrOfEdges;
+      console.log(
+        `Loaded ${elements.length} elements (${nrOfNodes} nodes and ${nrOfEdges} edges) from ${gedcomPath} | Capped at ${MAX_FAMILIES} families`
+      );
+
       setSources(gedcom.sources);
       // setImages(gedcom.images);
       initMinMax(elements);
@@ -82,19 +51,8 @@ const App: FC = () => {
         container: document.getElementById("cy"), // container to render in
         elements,
         style: getStyle({ images: gedcom.images }),
-
         layout,
       });
-
-      // Testing a filter
-      // const x = newCy.nodes().filter((n) => n.data("birthYear") < 1821);
-      // console.log(newCy.nodes(), x);
-      // const x= newCy.$("[birthYear > 1820]");
-      // newCy.nodes().not(x).remove();
-      // Note: does not work: newCy.nodes().restore();
-      // Note: This works with restore, but does not restore edges
-      // x.remove();
-      // x.restore();
 
       setCy(newCy);
 

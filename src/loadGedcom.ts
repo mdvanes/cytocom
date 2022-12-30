@@ -6,7 +6,7 @@ import {
 } from "read-gedcom";
 import { mapRecordToNode } from "./gedcom/mapRecordToNode";
 import { NodeDefinition, EdgeDefinition } from "cytoscape";
-import { PARENTS, UNMARRIED } from "./constants";
+import { MAX_FAMILIES, PARENTS, UNMARRIED } from "./constants";
 
 const getParentEdge = (
   parent1: SelectionIndividualRecord,
@@ -76,7 +76,10 @@ export const loadGedcom = async (
 
   // console.log("note", gedcom.getNoteRecord().arraySelect());
 
-  const mappedFamilies = families.arraySelect().slice(0, 30).map(mapFamily);
+  const mappedFamilies = families
+    .arraySelect()
+    .slice(0, MAX_FAMILIES)
+    .map(mapFamily);
   const result = mappedFamilies.reduce<(NodeDefinition | EdgeDefinition)[]>(
     (acc, next) => {
       return [...acc, ...next.parents, ...next.children];
@@ -88,10 +91,6 @@ export const loadGedcom = async (
     gedcom
       .getSourceRecord()
       .arraySelect()
-      // .map((source) => ({
-      //   id: source.pointer()[0] ?? "",
-      //   name: source.getDescriptiveTitle().value()[0] ?? "",
-      // }));
       .map((source) => [
         source.pointer()[0] ?? "",
         source.getDescriptiveTitle().value()[0] ?? "",
