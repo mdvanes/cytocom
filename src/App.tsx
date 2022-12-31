@@ -1,9 +1,4 @@
-import cytoscape, {
-  EdgeDefinition,
-  LayoutOptions,
-  NodeDefinition,
-  NodeSingular,
-} from "cytoscape";
+import cytoscape, { LayoutOptions, NodeSingular } from "cytoscape";
 import dagre from "cytoscape-dagre";
 import { FC, useEffect, useState } from "react";
 import "./App.css";
@@ -13,11 +8,11 @@ import cola from "cytoscape-cola";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { Actions } from "./actions/Actions";
+import { IndivDetails } from "./graph/IndivDetails";
+import { getStyle } from "./graph/style";
 import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
 import { loadState, saveState } from "./util/loadSaveState";
-import { IndivDetails } from "./graph/IndivDetails";
-import { getStyle } from "./graph/style";
 import { logLoaded } from "./util/readFile";
 
 cytoscape.use(cola);

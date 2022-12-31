@@ -6,7 +6,6 @@ export const readFile = (
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     const { files } = evt.target;
-    console.log(files);
 
     if (!files) {
       reject("");
