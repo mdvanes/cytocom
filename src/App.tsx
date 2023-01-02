@@ -115,16 +115,17 @@ const App: FC = () => {
       // });
 
       newCy.on("mouseover", "node", (evt) => {
-        const target: any = evt.target;
+        const target: NodeSingular = evt.target;
         // const node = target[0]._private.data;
         // console.log("tapped ", node.name);
 
-        newCy
-          .elements()
-          .difference(target.outgoers())
-          .not(target)
-          .addClass("semitransp");
-        target.addClass("highlight").outgoers().addClass("highlight");
+        // newCy
+        //   .elements()
+        //   .difference(target.outgoers())
+        //   .not(target)
+        //   .addClass("semitransp");
+        // target.addClass("highlight").outgoers().addClass("highlight");
+        target.addClass("highlight").neighborhood().addClass("highlight");
       });
 
       newCy.on("mouseout", "node", (evt) => {
