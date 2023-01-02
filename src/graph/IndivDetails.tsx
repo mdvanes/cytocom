@@ -2,7 +2,7 @@ import { FC } from "react";
 import { MappedNames } from "../gedcom/mapNames";
 import { NamesList } from "./NamesList";
 
-interface NodeData {
+export interface NodeData {
   names: MappedNames[];
   image: string;
   sources: string[];
