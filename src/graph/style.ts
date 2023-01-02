@@ -61,8 +61,14 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
   {
     selector: "edge",
     style: {
-      // "curve-style": "taxi",
-      "curve-style": "bezier",
+      "curve-style": (n) => {
+        // const type = n.data("type");
+        // if (type && (type === PARENTS || type === ASSOCIATION)) {
+        //   return "bezier";
+        // }
+        // return "taxi";
+        return "bezier";
+      },
       width: 0.5,
       "line-style": (n) => {
         return n.data("style") || "solid";

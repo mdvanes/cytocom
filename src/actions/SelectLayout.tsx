@@ -5,6 +5,7 @@ import {
   colaLayout,
   concentricLayout,
   gridLayout,
+  breadthfirstLayout,
 } from "../layouts";
 
 export interface Props {
@@ -17,6 +18,7 @@ const selectOptions: Record<string, LayoutOptions> = {
   cola: colaLayout,
   concentric: concentricLayout,
   grid: gridLayout,
+  breadthfirst: breadthfirstLayout,
 } as const;
 
 export const SelectLayout: FC<Props> = ({ cy, setLayout }) => {

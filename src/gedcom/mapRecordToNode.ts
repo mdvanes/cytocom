@@ -42,10 +42,16 @@ const getColor = (s?: string): string | undefined => {
 };
 
 const getYear = (familyEvent: SelectionIndividualEvent): number => {
-  const birthValueAsDate = familyEvent.getDate().valueAsDate()[0];
-  if (birthValueAsDate && "date" in birthValueAsDate) {
-    return birthValueAsDate.date.year.value;
+  const valueAsDate = familyEvent.getDate().valueAsDate()[0];
+  if (valueAsDate && "date" in valueAsDate) {
+    return valueAsDate.date.year.value;
   }
+
+  if (valueAsDate?.isDateRange) {
+    // @ts-expect-error dateAfter is the earliest date, dateBefore is the highest date.
+    return valueAsDate.dateAfter.year.value;
+  }
+
   return 0;
 };
 
