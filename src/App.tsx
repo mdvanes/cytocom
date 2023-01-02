@@ -12,26 +12,24 @@ import { IndivDetails } from "./graph/IndivDetails";
 import { getStyle } from "./graph/style";
 import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
-import { loadState, saveState } from "./util/loadSaveState";
 import { logLoaded } from "./util/readFile";
+import { useSearchParams } from "react-router-dom";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
 
 const App: FC = () => {
-  const loadedState = loadState();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [cy, setCy] = useState<cytoscape.Core>();
   const [layout, setLayout] = useState<LayoutOptions>(dagreLayout);
   const { initMinMax, rangeSlider } = useRange(cy);
-  const [gedcomPath, setGedcomPath] = useState(loadedState.gedcomPath);
   const [sources, setSources] = useState<Record<string, string>>();
   // const [images, setImages] = useState<Record<string, string>>();
   const [details, setDetails] = useState<any>();
   const [showDetails, setShowDetails] = useState(true);
-
-  useEffect(() => {
-    saveState({ gedcomPath });
-  }, [gedcomPath]);
+  const gedcomPath =
+    searchParams.get("gedcomPath") ??
+    "https://mon.arbre.app/gedcoms/royal92.ged";
 
   useEffect(() => {
     const run = async () => {
@@ -178,7 +176,12 @@ const App: FC = () => {
 
       <Actions
         setLayout={setLayout}
-        setGedcomPath={setGedcomPath}
+        gedcomPath={gedcomPath}
+        setGedcomPath={(newPath) => {
+          setSearchParams({
+            gedcomPath: newPath,
+          });
+        }}
         rangeSlider={rangeSlider}
         setShowDetails={setShowDetails}
         cy={cy}

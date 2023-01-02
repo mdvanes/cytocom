@@ -1,14 +1,14 @@
-const GEDCOM_KEY = "gedcomPath";
+const GEDCOM_CONTENT_KEY = "gedcomContent";
 
 export const loadState = () => {
-  const gedcomPath =
-    localStorage.getItem(GEDCOM_KEY) ??
-    "https://mon.arbre.app/gedcoms/royal92.ged";
+  const gedcomContent =
+    localStorage.getItem(GEDCOM_CONTENT_KEY) ??
+    "";
   return {
-    gedcomPath,
+    gedcomContent,
   };
 };
 
-export const saveState = ({ gedcomPath }: { gedcomPath: string }) => {
-  localStorage.setItem(GEDCOM_KEY, gedcomPath);
+export const saveState = ({ gedcomContent }: { gedcomContent: string }) => {
+  localStorage.setItem(GEDCOM_CONTENT_KEY, gedcomContent);
 };

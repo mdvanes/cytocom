@@ -1,5 +1,5 @@
 import { EdgeDefinition, NodeDefinition } from "cytoscape";
-import { MAX_FAMILIES } from "../constants";
+import { CUSTOM_GEDCOM, MAX_FAMILIES } from "../constants";
 
 export const readFile = (
   evt: React.ChangeEvent<HTMLInputElement>
@@ -33,7 +33,7 @@ export const readFile = (
   });
 };
 
-export const isFileContent = (path: string) => path.slice(0, 6) === "0 HEAD";
+export const isFileContent = (path: string) => path === CUSTOM_GEDCOM; // path.slice(0, 6) === "0 HEAD";
 
 export const logLoaded = (
   path: string,

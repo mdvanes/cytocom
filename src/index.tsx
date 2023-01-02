@@ -4,21 +4,26 @@ import App from "./App";
 import "./index.css";
 import "rc-slider/assets/index.css";
 // import reportWebVitals from './reportWebVitals';
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<App />}>
+    </Route>
+  )
+);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    {/* <button style={{ backgroundColor: "#8cb4ff" }}>blue</button>
-    <button style={{ backgroundColor: "#ff6d91" }}>pink</button>
-    <button style={{ backgroundColor: "#afa100" }}>yellow</button>
-    <button
-      style={{ color: "rgb(205, 205, 205)", backgroundColor: "transparent" }}
-    >
-      other
-    </button> */}
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

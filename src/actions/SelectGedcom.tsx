@@ -1,20 +1,22 @@
 import { FC, useState } from "react";
-import { loadState } from "../util/loadSaveState";
-import { isFileContent, readFile } from "../util/readFile";
+import { CUSTOM_GEDCOM } from "../constants";
+import { saveState } from "../util/loadSaveState";
+import { readFile } from "../util/readFile";
 
 export interface Props {
+  gedcomPath: string;
   setGedcomPath: (path: string) => void;
 }
 
-export const SelectGedcom: FC<Props> = ({ setGedcomPath }) => {
-  const loadedState = loadState();
+export const SelectGedcom: FC<Props> = ({ gedcomPath, setGedcomPath }) => {
   const [showFile, setShowFile] = useState(false);
 
   const handleUpload: React.ChangeEventHandler<HTMLInputElement> = async (
     evt
   ) => {
     const fileContent = await readFile(evt);
-    setGedcomPath(fileContent);
+    saveState({ gedcomContent: fileContent });
+    setGedcomPath(CUSTOM_GEDCOM);
   };
 
   return (
@@ -23,18 +25,14 @@ export const SelectGedcom: FC<Props> = ({ setGedcomPath }) => {
         name="gedcom"
         id="gedcom"
         onChange={(evt) => {
-          if (evt.target.value === "custom") {
+          if (evt.target.value === CUSTOM_GEDCOM) {
             setShowFile(true);
           } else if (evt.target.value) {
             setShowFile(false);
             setGedcomPath(evt.target.value);
           }
         }}
-        value={
-          isFileContent(loadedState.gedcomPath)
-            ? "custom"
-            : loadedState.gedcomPath
-        }
+        value={gedcomPath}
         className="primary"
       >
         <option value="/cytocom/7sisters.ged">Seven Sisters</option>
