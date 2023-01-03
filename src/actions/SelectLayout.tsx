@@ -1,19 +1,13 @@
-import { LayoutOptions } from "cytoscape";
 import { FC } from "react";
 import {
-  dagreLayout,
+  breadthfirstLayout,
   colaLayout,
   concentricLayout,
+  dagreLayout,
   gridLayout,
-  breadthfirstLayout,
 } from "../layouts";
 
-export interface Props {
-  cy: cytoscape.Core | undefined;
-  setLayout: (l: LayoutOptions) => void;
-}
-
-const selectOptions: Record<string, LayoutOptions> = {
+export const layoutKeys = {
   dagre: dagreLayout,
   cola: colaLayout,
   concentric: concentricLayout,
@@ -21,7 +15,15 @@ const selectOptions: Record<string, LayoutOptions> = {
   breadthfirst: breadthfirstLayout,
 } as const;
 
-export const SelectLayout: FC<Props> = ({ cy, setLayout }) => {
+export type LayoutKeys = keyof typeof layoutKeys;
+
+export interface Props {
+  cy: cytoscape.Core | undefined;
+  layout: LayoutKeys;
+  setLayout: (l: LayoutKeys) => void;
+}
+
+export const SelectLayout: FC<Props> = ({ cy, layout, setLayout }) => {
   return (
     <div>
       <select
@@ -29,17 +31,22 @@ export const SelectLayout: FC<Props> = ({ cy, setLayout }) => {
         name="gedcom"
         id="gedcom"
         onChange={(evt) => {
-          if (evt.target.value) {
-            const selectedLayout = selectOptions[evt.target.value];
+          if (evt.target.value && evt.target.value in layoutKeys) {
+            const newKey = evt.target.value as LayoutKeys;
+            const selectedLayout = layoutKeys[newKey];
             if (selectedLayout && cy) {
               const cWithLayout = cy.layout(selectedLayout);
               cWithLayout.run();
-              setLayout(selectedLayout);
+              setLayout(newKey);
             }
+          } else if (layout && cy) {
+            const selectedLayout = layoutKeys[layout];
+            const cWithLayout = cy.layout(selectedLayout);
+            cWithLayout.run();
           }
         }}
       >
-        {Object.keys(selectOptions).map((str) => {
+        {Object.keys(layoutKeys).map((str) => {
           return (
             <option key={str} value={str}>
               {str}

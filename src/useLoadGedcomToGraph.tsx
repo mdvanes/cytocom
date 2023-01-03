@@ -1,4 +1,4 @@
-import cytoscape, { LayoutOptions, NodeSingular } from "cytoscape";
+import cytoscape, { NodeSingular } from "cytoscape";
 import { ReactElement, useEffect } from "react";
 import "./App.css";
 import tippy from "tippy.js";
@@ -8,13 +8,14 @@ import { loadGedcom } from "./loadGedcom";
 import { useRange } from "./useRange";
 import { logLoaded } from "./util/readFile";
 import { onTapNode } from "./onTapNode";
+import { layoutKeys, LayoutKeys } from "./actions/SelectLayout";
 
 interface Props {
   cy?: cytoscape.Core;
   setCy: (x: cytoscape.Core) => void;
   gedcomPath: string;
   setSources: (x: Record<string, string>) => void;
-  layout: LayoutOptions;
+  layout: LayoutKeys;
   setDetails: (x: ReactElement) => void;
 }
 
@@ -41,7 +42,7 @@ export const useLoadGedcomToGraph = ({
         container: document.getElementById("cy"), // container to render in
         elements,
         style: getStyle({ images: gedcom.images }),
-        layout,
+        layout: layoutKeys[layout],
       });
 
       setCy(newCy);

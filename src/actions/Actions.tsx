@@ -9,13 +9,14 @@ type Props = SelectGedcomProps &
   DetailsButtonProps & { rangeSlider: JSX.Element } & SelectLayoutProps;
 
 export const Actions: FC<Props> = ({
-  gedcomPath,
-  setGedcomPath,
-  setShowDetails,
-  rangeSlider,
   cy,
-  sources,
+  gedcomPath,
+  layout,
+  rangeSlider,
+  setGedcomPath,
   setLayout,
+  setShowDetails,
+  sources,
 }) => {
   return (
     <div className="actions">
@@ -23,7 +24,7 @@ export const Actions: FC<Props> = ({
       {rangeSlider}
       <SelectSource cy={cy} sources={sources} />
       <DetailsButton setShowDetails={setShowDetails} />
-      <SelectLayout cy={cy} setLayout={setLayout} />
+      <SelectLayout cy={cy} layout={layout} setLayout={setLayout} />
     </div>
   );
 };
