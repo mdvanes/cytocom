@@ -25,7 +25,7 @@ const getLayoutWithFallback = (searchParams: URLSearchParams): LayoutKeys => {
 const App: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [cy, setCy] = useState<cytoscape.Core>();
-  const { rangeSlider } = useRange(cy);
+  const { rangeSlider, initMinMax } = useRange(cy);
   const [sources, setSources] = useState<Record<string, string>>();
   const [details, setDetails] = useState<ReactElement>();
   const [showDetails, setShowDetails] = useState(true);
@@ -37,6 +37,7 @@ const App: FC = () => {
   useLoadGedcomToGraph({
     cy,
     gedcomPath,
+    initMinMax,
     layout,
     setCy,
     setDetails,

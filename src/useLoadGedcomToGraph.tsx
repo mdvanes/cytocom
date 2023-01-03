@@ -1,34 +1,37 @@
-import cytoscape, { NodeSingular } from "cytoscape";
+import cytoscape, {
+  EdgeDefinition,
+  NodeDefinition,
+  NodeSingular,
+} from "cytoscape";
 import { ReactElement, useEffect } from "react";
 import "./App.css";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 import { getStyle } from "./graph/style";
 import { loadGedcom } from "./loadGedcom";
-import { useRange } from "./useRange";
 import { logLoaded } from "./util/readFile";
 import { onTapNode } from "./onTapNode";
 import { layoutKeys, LayoutKeys } from "./actions/SelectLayout";
 
 interface Props {
   cy?: cytoscape.Core;
-  setCy: (x: cytoscape.Core) => void;
+  setCy: (_: cytoscape.Core) => void;
   gedcomPath: string;
-  setSources: (x: Record<string, string>) => void;
+  setSources: (_: Record<string, string>) => void;
   layout: LayoutKeys;
-  setDetails: (x: ReactElement) => void;
+  setDetails: (_: ReactElement) => void;
+  initMinMax: (_: (NodeDefinition | EdgeDefinition)[]) => void;
 }
 
 export const useLoadGedcomToGraph = ({
   cy,
-  setCy,
   gedcomPath,
-  setSources,
+  initMinMax,
   layout,
+  setCy,
   setDetails,
+  setSources,
 }: Props) => {
-  const { initMinMax } = useRange(cy);
-
   useEffect(() => {
     const run = async () => {
       const { elements, ...gedcom } = await loadGedcom(gedcomPath);

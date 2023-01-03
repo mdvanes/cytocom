@@ -30,6 +30,7 @@ export const SelectLayout: FC<Props> = ({ cy, layout, setLayout }) => {
         className="secondary"
         name="gedcom"
         id="gedcom"
+        defaultValue={layout}
         onChange={(evt) => {
           if (evt.target.value && evt.target.value in layoutKeys) {
             const newKey = evt.target.value as LayoutKeys;
