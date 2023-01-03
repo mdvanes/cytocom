@@ -18,3 +18,9 @@ Make a graph visualisation with [Cytoscape.JS](https://js.cytoscape.org/) and [r
 - Data for the Seven Sisters GEDCOM file are based on the Seven Sisters novels by Lucinda Riley
 
 ## TODO
+
+- Link from the old repo to the new repo, with a deeplink with gedcomPath & layout
+- bug: BET death is not processed in filter (same for BET birth) - partially fixed
+- date slider on mobile on separate line
+- https://stackoverflow.com/questions/26123468/dynamic-node-content-label-in-cytoscape-js
+- bug: `Failed to parse source map` caused by CRA 5, see https://stackoverflow.com/a/70834076/7486264
