@@ -47,7 +47,7 @@ aside {
   padding: 5px 30px;
 }
 
-.actions input[type=file] {
+.actions input[type="file"] {
   background-color: #ff6d91;
   color: black;
   padding: 3px 10px;
@@ -72,4 +72,14 @@ aside {
   color: #8cb4ff;
   word-break: break-all;
   margin-bottom: 10px;
+}
+
+@media screen and (max-width: 400px) {
+  .App .actions {
+    display: block;
+  }
+
+  .App .actions > * {
+    margin-bottom: 10px;
+  }
 }

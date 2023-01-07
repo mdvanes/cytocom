@@ -64,6 +64,19 @@ const getUrl = (rec: SelectionIndividualRecord): string | undefined => {
   return www || objectFile;
 };
 
+const getDeathDateString = (
+  rec: SelectionIndividualRecord
+): string | undefined => {
+  const str = rec.getEventDeath().getDate().value()[0];
+  if (str) {
+    return str;
+  }
+  if (rec.getEventDeath().valueAsHappened()[0]) {
+    return "unknown";
+  }
+  return undefined;
+};
+
 export const mapRecordToNode =
   (parents: SelectionIndividualRecord[]) =>
   (record: SelectionIndividualRecord): (NodeDefinition | EdgeDefinition)[] => {
@@ -86,7 +99,7 @@ export const mapRecordToNode =
         color: getColor(s),
         birthDateString: record.getEventBirth().getDate().value()[0],
         birthYear: getYear(record.getEventBirth()),
-        deathDateString: record.getEventDeath().getDate().value()[0],
+        deathDateString: getDeathDateString(record),
         deathYear: getYear(record.getEventDeath()),
         sources: record.getSourceCitation().value(),
         image: record.getMultimedia().value()[0],

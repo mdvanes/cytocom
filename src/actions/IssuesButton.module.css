@@ -1,0 +1,15 @@
+.issues-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  padding: 2px 5px;
+}
+
+.issues-button:hover {
+    background-color: #8cb4ff;
+}
+
+.issues-button img {
+  height: 27px;
+}

@@ -43,6 +43,7 @@ export const SelectSource: FC<Props> = ({ cy, sources }) => {
         id="sources"
         onChange={handleSourceChange}
         className="alert"
+        defaultValue={selectedSource}
       >
         <option value="">All sources</option>
         {sources &&
@@ -52,9 +53,6 @@ export const SelectSource: FC<Props> = ({ cy, sources }) => {
             </option>
           ))}
       </select>
-      {selectedSource &&
-        sources &&
-        ` ${selectedSource} ${sources[selectedSource]}`}
     </div>
   );
 };

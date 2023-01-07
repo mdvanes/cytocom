@@ -1,5 +1,7 @@
 import { FC } from "react";
 import { Props as DetailsButtonProps, DetailsButton } from "./DetailsButton";
+import { IssuesButton } from "./IssuesButton";
+import { RelayoutButton } from "./RelayoutButton";
 import { Props as SelectGedcomProps, SelectGedcom } from "./SelectGedcom";
 import { Props as SelectLayoutProps, SelectLayout } from "./SelectLayout";
 import { Props as SelectSourceProps, SelectSource } from "./SelectSource";
@@ -23,8 +25,10 @@ export const Actions: FC<Props> = ({
       <SelectGedcom gedcomPath={gedcomPath} setGedcomPath={setGedcomPath} />
       {rangeSlider}
       <SelectSource cy={cy} sources={sources} />
-      <DetailsButton setShowDetails={setShowDetails} />
       <SelectLayout cy={cy} layout={layout} setLayout={setLayout} />
+      <RelayoutButton cy={cy} layout={layout} />
+      <DetailsButton setShowDetails={setShowDetails} />
+      <IssuesButton />
     </div>
   );
 };
