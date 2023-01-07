@@ -1,13 +1,14 @@
 {
   "files": {
-    "main.css": "/cytocom/static/css/main.05c639e4.css",
-    "main.js": "/cytocom/static/js/main.f04dc4d3.js",
+    "main.css": "/cytocom/static/css/main.691fa9af.css",
+    "main.js": "/cytocom/static/js/main.81e10fde.js",
+    "static/media/github-mark-white.svg": "/cytocom/static/media/github-mark-white.97ed8e7eef60d61ca469881dd6f34511.svg",
     "index.html": "/cytocom/index.html",
-    "main.05c639e4.css.map": "/cytocom/static/css/main.05c639e4.css.map",
-    "main.f04dc4d3.js.map": "/cytocom/static/js/main.f04dc4d3.js.map"
+    "main.691fa9af.css.map": "/cytocom/static/css/main.691fa9af.css.map",
+    "main.81e10fde.js.map": "/cytocom/static/js/main.81e10fde.js.map"
   },
   "entrypoints": [
-    "static/css/main.05c639e4.css",
-    "static/js/main.f04dc4d3.js"
+    "static/css/main.691fa9af.css",
+    "static/js/main.81e10fde.js"
   ]
 }
