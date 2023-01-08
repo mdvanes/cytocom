@@ -74,7 +74,7 @@ aside {
   margin-bottom: 10px;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 430px) {
   .App .actions {
     display: block;
   }
