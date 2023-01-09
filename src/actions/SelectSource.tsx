@@ -44,6 +44,7 @@ export const SelectSource: FC<Props> = ({ cy, sources }) => {
         onChange={handleSourceChange}
         className="alert"
         defaultValue={selectedSource}
+        style={{ maxWidth: 200 }}
       >
         <option value="">All sources</option>
         {sources &&

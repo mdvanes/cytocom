@@ -12,10 +12,16 @@ export interface MappedNames {
 
 export const mapNames = (selectionName: SelectionName): MappedNames => {
   const type = selectionName.getType().valueNonNull();
+  const surPrefixList = selectionName
+    .getPrefixSurname()
+    .valueNonNull()
+    .join(" ");
+  const surList = selectionName.getSurname().valueNonNull().join(" ");
+  const sur = `${surPrefixList} ${surList}`;
   return {
     type: type.length > 0 ? type[0] : "birth",
     prefix: selectionName.getPrefixName().valueNonNull().join(", "),
-    sur: selectionName.getSurname().valueNonNull().join(", "),
+    sur,
     givenParts: selectionName.getGivenName().valueNonNull(),
     given: selectionName.getGivenName().valueNonNull().join(", "),
     // nickParts: nobj.getNickname().value(),

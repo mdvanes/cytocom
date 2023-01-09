@@ -47,9 +47,10 @@ const getYear = (familyEvent: SelectionIndividualEvent): number => {
     return valueAsDate.date.year.value;
   }
 
-  if (valueAsDate?.isDateRange) {
+  // @ts-expect-error
+  if (valueAsDate?.isDateRange && valueAsDate?.dateAfter?.year?.value) {
     // @ts-expect-error dateAfter is the earliest date, dateBefore is the highest date.
-    return valueAsDate.dateAfter.year.value;
+    return valueAsDate.dateAfter?.year?.value;
   }
 
   return 0;
@@ -89,6 +90,40 @@ export const mapRecordToNode =
 
     const adoptiveParentIds = getAdoptiveParentIds(record);
     const mappedNames = getRenderedNames(record);
+
+    // if (getRenderedName(mappedNames) === "Jock") {
+    //   console.log(
+    //     "Jock Specific",
+    //     getYear(record.getEventDeath()),
+    //     record.getEventDeath().getDate().value()[0],
+    //     record.getEventDeath(),
+    //     record.getEventDeath().valueAsHappened()[0],
+    //     record.getEventDeath().getDate().valueNonNull(),
+    //     getDeathDateString(record)
+    //   );
+    // }
+    // if (getRenderedName(mappedNames) === "Nuala") {
+    //   console.log(
+    //     "Nuala Aspecific",
+    //     getYear(record.getEventDeath()),
+    //     record.getEventDeath().getDate().value()[0],
+    //     record.getEventDeath(),
+    //     record.getEventDeath().valueAsHappened()[0],
+    //     record.getEventDeath().getDate().valueNonNull(),
+    //     getDeathDateString(record)
+    //   );
+    // }
+    // if (getRenderedName(mappedNames) === "Chrissie") {
+    //   console.log(
+    //     "Chrissie Alive",
+    //     getYear(record.getEventDeath()),
+    //     record.getEventDeath().getDate().value()[0],
+    //     record.getEventDeath(),
+    //     record.getEventDeath().valueAsHappened()[0],
+    //     record.getEventDeath().valueAsHappened(),
+    //     getDeathDateString(record)
+    //   );
+    // }
 
     const node = {
       data: {
