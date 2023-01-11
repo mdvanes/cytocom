@@ -35,11 +35,11 @@ const getRenderedLastName = (names: MappedNames[]): string | undefined => {
 };
 
 // NOTE: used as Node label
-const getRenderedName = (names: MappedNames[]): string => {
+const getRenderedName = (names: MappedNames[], showLast: boolean): string => {
   const first = getRenderedFirstName(names);
   const last = getRenderedLastName(names);
 
-  if (last) {
+  if (showLast && last) {
     return `${first}\n${last}`;
   }
   return first;
@@ -97,6 +97,11 @@ const getDeathDateString = (
   return undefined;
 };
 
+export const getShowLast = () => {
+  const item = localStorage.getItem("showLast");
+  return item === "true";
+};
+
 export const mapRecordToNode =
   (parents: SelectionIndividualRecord[]) =>
   (record: SelectionIndividualRecord): (NodeDefinition | EdgeDefinition)[] => {
@@ -110,10 +115,12 @@ export const mapRecordToNode =
     const adoptiveParentIds = getAdoptiveParentIds(record);
     const mappedNames = getRenderedNames(record);
 
+    const showLast = getShowLast();
+
     const node = {
       data: {
         id: pointer,
-        name: getRenderedName(mappedNames),
+        name: getRenderedName(mappedNames, showLast),
         names: mappedNames,
         s,
         color: getColor(s),

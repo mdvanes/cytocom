@@ -7,7 +7,7 @@ export interface Props {
 export const DetailsButton: FC<Props> = ({ setShowDetails }) => {
   return (
     <button
-      id="mybutton"
+      id="details-button"
       className="secondary"
       onClick={() => {
         setShowDetails((prev) => !prev);

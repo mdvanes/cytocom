@@ -82,4 +82,8 @@ aside {
   .App .actions > * {
     margin-bottom: 10px;
   }
+
+  .App .actions > button {
+    margin-right: 10px;
+  }
 }

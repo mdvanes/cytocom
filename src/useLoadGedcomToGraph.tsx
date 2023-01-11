@@ -88,8 +88,12 @@ export const useLoadGedcomToGraph = ({
 
     run();
 
-    tippy("#mybutton", {
+    tippy("#details-button", {
       content: "click to toggle the detail view on the right",
+    });
+
+    tippy("#toggle-last-name", {
+      content: "toggle showing the lastname on graph nodes",
     });
 
     return () => {

@@ -1,10 +1,11 @@
 import { FC } from "react";
-import { Props as DetailsButtonProps, DetailsButton } from "./DetailsButton";
+import { DetailsButton, Props as DetailsButtonProps } from "./DetailsButton";
 import { IssuesButton } from "./IssuesButton";
 import { RelayoutButton } from "./RelayoutButton";
 import { Props as SelectGedcomProps, SelectGedcom } from "./SelectGedcom";
 import { Props as SelectLayoutProps, SelectLayout } from "./SelectLayout";
 import { Props as SelectSourceProps, SelectSource } from "./SelectSource";
+import { ToggleLastName } from "./ToggleLastName";
 
 type Props = SelectGedcomProps &
   SelectSourceProps &
@@ -28,6 +29,7 @@ export const Actions: FC<Props> = ({
       <SelectLayout cy={cy} layout={layout} setLayout={setLayout} />
       <RelayoutButton cy={cy} layout={layout} />
       <DetailsButton setShowDetails={setShowDetails} />
+      <ToggleLastName />
       <IssuesButton />
     </div>
   );
