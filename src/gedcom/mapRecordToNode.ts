@@ -8,22 +8,41 @@ import { isDefined } from "../util/isDefined";
 import { getAdoptiveParentIds } from "./getAdoptiveParentIds";
 import { mapNames, MappedNames } from "./mapNames";
 
-// NOTE: used as Node label
-const getRenderedName = (names: MappedNames[]): string => {
+const getRenderedFirstName = (names: MappedNames[]): string => {
   if (names.length === 0) {
     return "";
   }
-  const { nick, given, sur, value } = names[0];
+  const { nick, given, value } = names[0];
   if (nick) {
     return nick;
   }
   if (given) {
     return given.split(" ")[0].trim();
   }
-  if (sur) {
-    return sur;
-  }
   return value.split(" ")[0].trim();
+};
+
+const getRenderedLastName = (names: MappedNames[]): string | undefined => {
+  if (names.length === 0) {
+    return "";
+  }
+  const { sur } = names[0];
+
+  if (sur) {
+    return sur.trim();
+  }
+  return;
+};
+
+// NOTE: used as Node label
+const getRenderedName = (names: MappedNames[]): string => {
+  const first = getRenderedFirstName(names);
+  const last = getRenderedLastName(names);
+
+  if (last) {
+    return `${first}\n${last}`;
+  }
+  return first;
 };
 
 const getRenderedNames = (rec: SelectionIndividualRecord): MappedNames[] => {
@@ -90,40 +109,6 @@ export const mapRecordToNode =
 
     const adoptiveParentIds = getAdoptiveParentIds(record);
     const mappedNames = getRenderedNames(record);
-
-    // if (getRenderedName(mappedNames) === "Jock") {
-    //   console.log(
-    //     "Jock Specific",
-    //     getYear(record.getEventDeath()),
-    //     record.getEventDeath().getDate().value()[0],
-    //     record.getEventDeath(),
-    //     record.getEventDeath().valueAsHappened()[0],
-    //     record.getEventDeath().getDate().valueNonNull(),
-    //     getDeathDateString(record)
-    //   );
-    // }
-    // if (getRenderedName(mappedNames) === "Nuala") {
-    //   console.log(
-    //     "Nuala Aspecific",
-    //     getYear(record.getEventDeath()),
-    //     record.getEventDeath().getDate().value()[0],
-    //     record.getEventDeath(),
-    //     record.getEventDeath().valueAsHappened()[0],
-    //     record.getEventDeath().getDate().valueNonNull(),
-    //     getDeathDateString(record)
-    //   );
-    // }
-    // if (getRenderedName(mappedNames) === "Chrissie") {
-    //   console.log(
-    //     "Chrissie Alive",
-    //     getYear(record.getEventDeath()),
-    //     record.getEventDeath().getDate().value()[0],
-    //     record.getEventDeath(),
-    //     record.getEventDeath().valueAsHappened()[0],
-    //     record.getEventDeath().valueAsHappened(),
-    //     getDeathDateString(record)
-    //   );
-    // }
 
     const node = {
       data: {

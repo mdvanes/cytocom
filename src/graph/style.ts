@@ -32,7 +32,7 @@ export const getStyle = ({ images }: Args): CytoscapeOptions["style"] => [
         const url = n.data("url") ? " 🔗" : "";
         return `${name}${deathYear}${url}`;
       },
-      // "text-wrap": "wrap",
+      "text-wrap": "wrap",
     },
   },
   // {
