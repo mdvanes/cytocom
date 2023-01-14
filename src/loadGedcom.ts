@@ -42,7 +42,8 @@ const mapFamily = (fam: SelectionFamilyRecord): Family => {
   const parentEdge = getParentEdge(
     parent1,
     parent2,
-    fam.getEventMarriage().valueAsHappened()[0]
+    fam.getEventMarriage().valueAsHappened()[0] ||
+      fam.getEventMarriage().arraySelect().length > 0
   );
 
   const parentNodes = [
