@@ -21,6 +21,7 @@ interface Props {
   layout: LayoutKeys;
   setDetails: (_: ReactElement) => void;
   initMinMax: (_: (NodeDefinition | EdgeDefinition)[]) => void;
+  setNrOfFamilies: (_: number) => void;
 }
 
 export const useLoadGedcomToGraph = ({
@@ -31,12 +32,18 @@ export const useLoadGedcomToGraph = ({
   setCy,
   setDetails,
   setSources,
+  setNrOfFamilies,
 }: Props) => {
   useEffect(() => {
     const run = async () => {
-      const { elements, ...gedcom } = await loadGedcom(gedcomPath);
+      const {
+        elements,
+        nrOfFamilies: loadedNrOfFamilies,
+        ...gedcom
+      } = await loadGedcom(gedcomPath);
 
-      logLoaded(gedcomPath, elements);
+      logLoaded(gedcomPath, elements, loadedNrOfFamilies);
+      setNrOfFamilies(loadedNrOfFamilies);
 
       setSources(gedcom.sources);
       initMinMax(elements);

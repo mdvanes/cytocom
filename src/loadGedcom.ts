@@ -69,6 +69,7 @@ export const loadGedcom = async (
   elements: (NodeDefinition | EdgeDefinition)[];
   sources: Record<string, string>;
   images: Record<string, string>;
+  nrOfFamilies: number;
 }> => {
   const gedcom = isFileContent(path)
     ? readGedcom(stringToArrayBuffer(loadState().gedcomContent))
@@ -116,5 +117,6 @@ export const loadGedcom = async (
     elements: result,
     sources,
     images,
+    nrOfFamilies: families.arraySelect().length,
   };
 };

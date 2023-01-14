@@ -74,6 +74,12 @@ aside {
   margin-bottom: 10px;
 }
 
+.App .max-families-exceeded {
+  color: #ff6d91;
+  font-weight: bold;
+  margin: -15px 32px;
+}
+
 @media screen and (max-width: 430px) {
   .App .actions {
     display: block;

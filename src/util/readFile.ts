@@ -33,17 +33,19 @@ export const readFile = (
   });
 };
 
-export const isFileContent = (path: string) => path === CUSTOM_GEDCOM; // path.slice(0, 6) === "0 HEAD";
+export const isFileContent = (path: string) => path === CUSTOM_GEDCOM;
 
 export const logLoaded = (
   path: string,
-  elements: (NodeDefinition | EdgeDefinition)[]
+  elements: (NodeDefinition | EdgeDefinition)[],
+  nrOfFamilies: number
 ): void => {
   const nrOfEdges = elements.filter((elem) => "source" in elem.data).length;
   const nrOfNodes = elements.length - nrOfEdges;
   const from = isFileContent(path) ? "a custom file" : path;
+ 
   console.log(
-    `Loaded ${elements.length} elements (${nrOfNodes} nodes and ${nrOfEdges} edges) from ${from} | Capped at ${MAX_FAMILIES} families`
+    `Loaded ${elements.length} elements (${nrOfNodes} nodes and ${nrOfEdges} edges) from ${from} with ${nrOfFamilies} families | Capped at ${MAX_FAMILIES} families`
   );
 };
 

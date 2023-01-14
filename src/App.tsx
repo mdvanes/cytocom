@@ -10,6 +10,7 @@ import { Actions } from "./actions/Actions";
 import { useLoadGedcomToGraph } from "./useLoadGedcomToGraph";
 import { useRange } from "./useRange";
 import { layoutKeys, LayoutKeys } from "./actions/SelectLayout";
+import { MAX_FAMILIES } from "./constants";
 
 cytoscape.use(cola);
 cytoscape.use(dagre);
@@ -29,6 +30,7 @@ const App: FC = () => {
   const [sources, setSources] = useState<Record<string, string>>();
   const [details, setDetails] = useState<ReactElement>();
   const [showDetails, setShowDetails] = useState(true);
+  const [nrOfFamilies, setNrOfFamilies] = useState(0);
   const gedcomPath =
     searchParams.get("gedcomPath") ??
     "https://mon.arbre.app/gedcoms/royal92.ged";
@@ -42,6 +44,7 @@ const App: FC = () => {
     setCy,
     setDetails,
     setSources,
+    setNrOfFamilies,
   });
 
   return (
@@ -51,6 +54,12 @@ const App: FC = () => {
         <aside>{details}</aside>
       </section>
 
+      {nrOfFamilies > MAX_FAMILIES && (
+        <p className="max-families-exceeded">
+          ⚠️ WARNING: this GEDCOM contains {nrOfFamilies} families, but only{" "}
+          {MAX_FAMILIES} families will be displayed!
+        </p>
+      )}
       <Actions
         layout={layout}
         setLayout={(newLayout) => {
